@@ -145,7 +145,7 @@ public class Main {
         JMenu btnDatei, btnTable, btnChart;
         JPanel panel;
         GridBagConstraints c;
-        JButton newTableButton;
+        DashBoardButton newTableButton;
 
         dashboard.setLayout(new GridBagLayout());
 
@@ -172,8 +172,8 @@ public class Main {
         c.gridy = 4;
         c.gridx = 0;
 
-        newTableButton = new JButton("NEW");
-        newTableButton.setOpaque(false);
+        newTableButton = new DashBoardButton("NEW");
+
         newTableButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

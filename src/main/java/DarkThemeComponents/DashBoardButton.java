@@ -19,10 +19,10 @@ public final class DashBoardButton extends JButton {
     public DashBoardButton(String text) {
         
         super (text);
-//        super.setBackground(Color.decode("#424242"));
+        super.setBackground(Color.decode("#424242"));
         super.setForeground(Color.white);
 //        super.setBorder(BorderFactory.createEmptyBorder(10,24,10,24));
-
+            super.setOpaque(false);
         this.setFocusPainted(false);
         this.setBorderPainted(false);
         this.setForeground(Color.white);
