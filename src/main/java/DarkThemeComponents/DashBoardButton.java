@@ -13,29 +13,21 @@ import java.awt.*;
 public final class DashBoardButton extends JButton {
 
     private Dimension size;
-    private final Color BG_COLOR, TEXT_COLOR;
-    private final Container host;
+    private final Color  TEXT_COLOR = Color.decode("#FAFAFA");
 
-    public DashBoardButton(String text, Container host) {
+
+    public DashBoardButton(String text) {
         
         super (text);
-        this.host = host;
-   
-        this.BG_COLOR = host.getBackground();        
-        this.TEXT_COLOR = Color.decode("#FAFAFA");
-      
-        initComponents();
-        
-    }
-    public void initComponents(){
-        
-        setBackground(BG_COLOR);  
-        setSize(new Dimension((host.getWidth()), 30));
+//        super.setBackground(Color.decode("#424242"));
+        super.setForeground(Color.white);
+//        super.setBorder(BorderFactory.createEmptyBorder(10,24,10,24));
+
         this.setFocusPainted(false);
         this.setBorderPainted(false);
-        this.setForeground(TEXT_COLOR);
-        this.setMargin(new Insets(10,16,10,16));
+        this.setForeground(Color.white);
+
     }
-    
+
     
 }

@@ -17,31 +17,33 @@ import java.awt.event.ItemListener;
  * @author Vilrose Daquiado
  */
 public class FileMenuBar extends JMenuBar implements ActionListener, ItemListener{
-    JMenu menu;
-    JMenuItem menuItem;
+    private JMenu menu;
+    private JMenuItem menuItem;
+    private JButton button;
     //Create the menu bar.
 
-    public FileMenuBar(Container parent ) {
-       super.setPreferredSize(new Dimension(parent.getWidth(),30));
-        setBackground(parent.getBackground());
-        setMargin(new Insets(10,16,10,16));
+    public FileMenuBar() {
+//        super.setMargin(new Insets(10,16,10,16));
+//        super.setMinimumSize(new Dimension(50,100));
+        this.setOpaque(false);
+
         this.setAlignmentX(Component.CENTER_ALIGNMENT);
         //create the  menu for the files imported.
-        menu = new JMenu();
-        menu.setBackground(Color.red);
-        menu.setMargin(new Insets(10,16,10,16));
-        menu.setForeground(Color.decode("#EEEEEE"));
-        add(menu);
-        
-        
+
     }
-    //a method that has JMenuItem and JTabbedPane parameters
-    public void addItem(JMenuItem menuItem){
-//        menuItem = new JMenuItem(new ImageIcon("..\\CSVReader\\src\\main\\java\\Images\\baseline_description_black_18dp.png"));
-        this.menuItem = menuItem;
-        
-        menu.add(menuItem);
+
+
+    public FileMenuBar(JMenu menu) {
+        this.setOpaque(false);
+
+
+        this.menu = menu;
+        this.menu.setBorder(BorderFactory.createEmptyBorder(10,24,10,24));
+        this.add(menu);
     }
+
+
+
 
     public JMenu getMenu() {
         return menu;

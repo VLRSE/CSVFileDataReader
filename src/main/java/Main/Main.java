@@ -89,10 +89,10 @@ public class Main {
         //get the references to the main panels of the DarkFrame class
         centerPanel = frame.getCenterPanel();
         dashboard = frame.getDashboardPanel();
-        dashboard.setLayout(new FlowLayout(FlowLayout.CENTER, 0,20));
+
+        dashboard.setLayout(new FlowLayout(FlowLayout.CENTER, 20,20));
         //add a menubar and JButton´s instances to the dashboard on the left side of the frame
-//        DashBoardMenu dashboardMenu = new DashBoardMenu();
-//        dashboard.add(dashboardMenu);
+
         addDashboardButtons();
 
         try {
@@ -138,36 +138,39 @@ public class Main {
 
     //a method that creates DashBoardButton instances to be added to the dashboard(left panel) panel container of the frame
     public static void addDashboardButtons(){
-        DashBoardButton btnDatei, btnTable, btnChart;
+        JMenu btnDatei, btnTable, btnChart;
         JPanel panel;
         GridBagConstraints c;
 
-        menuBar = new FileMenuBar(dashboard);
-        menu = menuBar.getMenu();
+        btnDatei = new JMenu("Datei");
+        menuBar = new FileMenuBar(btnDatei);
+//        menu = menuBar.getMenu();
         JMenuItem menuItem = new JMenuItem();
-        btnDatei = new DashBoardButton("Datei", dashboard);
-        btnTable = new DashBoardButton("Tabelle", dashboard);
-        btnChart = new DashBoardButton("Chart", dashboard);
 
-        panel = new JPanel(new GridBagLayout());
 
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.CENTER;
-        c.gridy = 0;
-        c.gridx = 0;
-        panel.add(menuBar, c);
+        btnTable = new JMenu("Tabelle");
+        btnChart = new JMenu("Chart");
 
-        c.ipady = 0;
-        c.gridy = 1;
-        c.gridx = 0;
-        panel.add(btnTable, c);
 
-        c.gridy = 2;
-        c.gridx = 0;
-        panel.add(btnChart, c);
+//        panel = new JPanel(new GridBagLayout());
+//
+//        c = new GridBagConstraints();
+//        c.fill = GridBagConstraints.HORIZONTAL;
+//        c.anchor = GridBagConstraints.CENTER;
+//        c.gridy = 0;
+//        c.gridx = 0;
+//        panel.add(menuBar, c);
+//
+//        c.ipady = 0;
+//        c.gridy = 1;
+//        c.gridx = 0;
+//        panel.add(btnTable, c);
+//
+//        c.gridy = 2;
+//        c.gridx = 0;
+//        panel.add(btnChart, c);
 
-        dashboard.add(panel);
+        dashboard.add(menuBar);
     }
 
     //a method to get references to the button components of the frame and other outer Classes´ components
@@ -362,7 +365,7 @@ public class Main {
 
     public static void addMenuItem(String title) {
         DarkMenuItem menuItem = new DarkMenuItem(title, tabbedPane);
-        JMenuItem add = menu.add(menuItem);
+        JMenuItem add = menuBar.getMenu(0).add(menuItem);
     }
 
     public static JScrollPane createTable(DefaultTableModel tableModel) {

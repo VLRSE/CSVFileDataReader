@@ -28,6 +28,7 @@ public class DarkTabbedPane extends JTabbedPane {
         super.setBackgroundAt(selectedPosition, PRIMARY_COLOR.darker());
         super.setForeground(DEFAULT_TEXT_COLOR);
         super.setBackground(DEFAULT_BG_COLOR);
+//        super.setForegroundAt(getSelectedIndex(), Color.BLUE);
         initComponents(component);
 
     }
