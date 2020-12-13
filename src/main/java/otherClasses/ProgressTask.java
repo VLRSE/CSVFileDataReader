@@ -22,7 +22,7 @@ import java.util.stream.StreamSupport;
 public class ProgressTask extends SwingWorker< List<Artikel>, Artikel> {
 
     private final Path sourcePath;
-    public DefaultTableModel tableModel;
+    public DefaultArtikelTableModel tableModel;
     private int progress = 0;
     private List<Artikel> aList;
 
@@ -32,7 +32,7 @@ public class ProgressTask extends SwingWorker< List<Artikel>, Artikel> {
     private String[] header;
 
 
-    public ProgressTask(DefaultTableModel tableModel, Path sourcePath) {
+    public ProgressTask(DefaultArtikelTableModel tableModel, Path sourcePath) {
 
         this.tableModel = tableModel;
         this.sourcePath =sourcePath;
@@ -111,7 +111,6 @@ public class ProgressTask extends SwingWorker< List<Artikel>, Artikel> {
 
         JOptionPane.showMessageDialog(null, "Datei wurde importiert", "Import erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 
-
-
     }
+
 }

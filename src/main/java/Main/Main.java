@@ -2,6 +2,7 @@ package Main;
 
 import DarkThemeComponents.*;
 import otherClasses.Artikel;
+import otherClasses.DefaultArtikelTableModel;
 import otherClasses.FileChooser;
 import otherClasses.ProgressTask;
 
@@ -50,10 +51,13 @@ public class Main {
     private static List<Map<String, Path>> importedFiles;
     private  static    Map<String, Path> filenameAndPath;
     private static String[] header;
-    private static DefaultTableModel tableModel;
+    private static DefaultArtikelTableModel tableModel;
     private  static JTable table;
     private static final Color PRIMARY_COLOR = Color.decode("#42A5F5");
-    private final Font BUTTON_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 12);
+    private static final Font BUTTON_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 12);
+    private static final String[] columnIdentifiers = new String[]{"Hauptartikelnr", "ArtikelName", "Hersteller"
+            , "Beschreibung", "Materialangaben", "Geschlecht", "Produktart", "Ärmel"
+            , "Bein", "Kragen", "Herstellung", "Taschenart", "Grammatur", "Material", "Ursprungsland", "Bildname"};
 
 
 
@@ -141,6 +145,9 @@ public class Main {
         JMenu btnDatei, btnTable, btnChart;
         JPanel panel;
         GridBagConstraints c;
+        JButton newTableButton;
+
+        dashboard.setLayout(new GridBagLayout());
 
         btnDatei = new JMenu("Datei");
         menuBar = new FileMenuBar(btnDatei);
@@ -154,23 +161,38 @@ public class Main {
 
 //        panel = new JPanel(new GridBagLayout());
 //
-//        c = new GridBagConstraints();
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.anchor = GridBagConstraints.CENTER;
-//        c.gridy = 0;
-//        c.gridx = 0;
-//        panel.add(menuBar, c);
-//
-//        c.ipady = 0;
-//        c.gridy = 1;
-//        c.gridx = 0;
-//        panel.add(btnTable, c);
-//
-//        c.gridy = 2;
-//        c.gridx = 0;
-//        panel.add(btnChart, c);
+        c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridy = 0;
+        c.gridx = 0;
+        dashboard.add(menuBar,c );
 
-        dashboard.add(menuBar);
+        c.ipady = 10;
+        c.gridy = 4;
+        c.gridx = 0;
+
+        newTableButton = new JButton("NEW");
+        newTableButton.setOpaque(false);
+        newTableButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel tb = new DefaultTableModel();
+                tb.setColumnCount(16);
+                tb.setRowCount(30);
+                tb.setColumnIdentifiers(columnIdentifiers);
+                JTable table = new JTable(tb);
+
+                tabbedPane.addTab("Untitled", null, new JScrollPane(table));
+                int currentViewTab = tabbedPane.getComponentCount() - 1;
+                tabbedPane.setSelectedIndex(currentViewTab);
+
+            }
+        });
+        dashboard.add(newTableButton,c);
+
+
+
     }
 
     //a method to get references to the button components of the frame and other outer Classes´ components
@@ -208,6 +230,7 @@ public class Main {
         tabbedPane.getSelectedComponent().setForeground(Color.white);
         tabbedPane.setBackground(Color.darkGray);
 
+
         centerPanel.add(tabbedPane);
     }
 
@@ -219,6 +242,8 @@ public class Main {
          *enable start button
          */
         if(fileChooser.getReturnVal() == JFileChooser.APPROVE_OPTION){
+            btnStart.setEnabled(true);
+
             path = fileChooser.getFile().toPath();
             filename = path.getFileName().toString();
             //calculate the file size
@@ -239,8 +264,10 @@ public class Main {
             btnStart.setEnabled(true);
             btnStart.addActionListener((ActionEvent e) -> {
                 try {
-                    //call method for this action
-                    btnStartActionPerformed(fileChooser);
+
+                        //call method for this action
+                        btnStartActionPerformed(fileChooser);
+
 
                 }
                 catch (IOException ex) {
@@ -261,6 +288,7 @@ public class Main {
 
     public static void resetComponents(){
         btnImport.setEnabled(true);
+        btnStart.setText("Start");
         btnStart.setEnabled(false);
 
         filenameLabel.setText("Keine Datei ausgewählt!");
@@ -272,16 +300,15 @@ public class Main {
     }
 
     public static void btnStartActionPerformed(FileChooser fileChooser) throws IOException, ExecutionException, InterruptedException {
-        String[] headers = new String[]{"Hauptartikelnr", "ArtikelName", "Hersteller"
-                , "Beschreibung", "Materialangaben", "Geschlecht", "Produktart", "Ärmel"
-                , "Bein", "Kragen", "Herstellung", "Taschenart", "Grammatur", "Material", "Ursprungsland", "Bildname"};
+
         frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
 
         //show file´s size and the progressBar update
         String stringFormatted = String.format("%.02f",  fileSize );
         fileSizeText.setText(""+stringFormatted  + fileType+ " of " +stringFormatted +" " +fileType);
 
-        tableModel = new DefaultTableModel() ;
+        tableModel = new DefaultArtikelTableModel() ;
         JTable table = new JTable(tableModel);
         task = new ProgressTask(tableModel, path);
 
@@ -318,8 +345,10 @@ public class Main {
                   //add a new Tab item with filename as the title and the table for the content
                     addTabAndItem(filename, tableModel);
 
-                    try {
-                        aList = task.get();
+
+//                        aList = task.get();
+
+                        System.out.println( tableModel.getDataVector().get(2));
 
 //                        System.out.println(aList.get(1).toMap().get("Hauptartikelnr"));
                         //create and display the table with the csv file records
@@ -327,11 +356,7 @@ public class Main {
                         //reset the components at the start page to prepare for new import
                         resetComponents();
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
+
 
                 }
 
@@ -347,7 +372,8 @@ public class Main {
         frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
         //add the headers String array as column identifiers to ready the table for data entries
-        tableModel.setColumnIdentifiers(headers);
+        tableModel.setColumnIdentifiers(columnIdentifiers);
+
 
 
     }

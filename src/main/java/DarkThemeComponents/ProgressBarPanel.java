@@ -174,7 +174,6 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
     
         button = new JButton(text);   
         button.setBackground(DEFAULT_BG_COLOR.darker());
-        button.setOpaque(false);
         button.setAlignmentX(Component.RIGHT_ALIGNMENT);
         button.setHorizontalAlignment(SwingConstants.RIGHT);
         button.setFont(LABEL_FONT);
@@ -216,6 +215,18 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
         
         if(source == btnStartCancel){
             btnStartCancel.setEnabled(false);
+
+            //toggle Start to Cancel button and vice versa
+//            if(btnStartCancel.getText().equalsIgnoreCase("Starten")){
+//                btnStartCancel.setText("Cancel");
+//                btnStartCancel.setOpaque(true);
+//                btnStartCancel.setBackground(Color.red.darker());
+//
+//            }
+//            else{
+//                btnStartCancel.setText("Starten");
+//                btnStartCancel.setOpaque(false);
+//            }
         }
         
     }

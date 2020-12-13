@@ -1,9 +1,11 @@
 package otherClasses;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
+import java.util.List;
 
-public class DefaultArtikelTableModel extends AbstractTableModel {
+public class DefaultArtikelTableModel extends DefaultTableModel {
 
     private final String[] columnIdentifiers = {"Hauptartikelnr", "ArtikelName", "Hersteller"
             , "Beschreibung", "Materialangaben", "Geschlecht", "Produktart", "Ärmel"
@@ -21,9 +23,8 @@ public class DefaultArtikelTableModel extends AbstractTableModel {
 
     }
 
-    @Override
-    public int getRowCount() {
-        return artikelList.size();
+    public List<Artikel> getTableData(){
+        return artikelList;
     }
 
     @Override
@@ -31,66 +32,68 @@ public class DefaultArtikelTableModel extends AbstractTableModel {
         return 16;
     }
 
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        //get the Artikel entry at the rowIndex requested from the ArrayList
-        Artikel artikel =  artikelList.get(rowIndex);
-        //get an array of the artikel values
-        Object entryElement = null;
-//                entryElement = artikel.toArray()[columnIndex];
+//    @Override
+//    public Object getValueAt(int rowIndex, int columnIndex) {
+//        //get the Artikel entry at the rowIndex requested from the ArrayList
+//        Artikel artikel =  artikelList.get(rowIndex);
+//        //get an array of the artikel values
+//        Object entryElement = null;
+////                entryElement = artikel.toArray()[columnIndex];
+//
+//        switch (columnIndex){
+//            case 0:
+//               entryElement = artikel.getHauptartikelnr();
+//                break;
+//            case 1:
+//                entryElement = artikel.getArtikelName();
+//                break;
+//            case 2:
+//                entryElement = artikel.getHersteller();
+//                break;
+//
+//            case 3:
+//                entryElement = artikel.getBeschreibung();
+//                break;
+//            case 4:
+//                entryElement = artikel.getMaterialangaben();
+//                break;
+//            case 5:
+//                entryElement = artikel.getGeschlecht();
+//                break;
+//            case 6:
+//                entryElement = artikel.getProduktart();
+//                break;
+//            case 7:
+//                entryElement = artikel.getÄrmel();
+//                break;
+//            case 8:
+//                entryElement = artikel.getBein();
+//                break;
+//            case 9:
+//                entryElement = artikel.getKragen();
+//                break;
+//            case 10:
+//                entryElement = artikel.getHerstellung();
+//                break;
+//            case 11:
+//                entryElement = artikel.getTaschenart();
+//                break;
+//            case 12:
+//                entryElement = artikel.getGrammatur();
+//                break;
+//            case 13:
+//                entryElement = artikel.getMaterial();
+//                break;
+//            case 14:
+//                entryElement = artikel.getUrsprungsland();
+//                break;
+//            case 15:
+//                entryElement = artikel.getBildname();
+//                break;
+//        }
+//
+//        return entryElement;
+//    }
 
-        switch (columnIndex){
-            case 0:
-                entryElement = artikel.getHauptartikelnr();
-                break;
-            case 1:
-                entryElement = artikel.getArtikelName();
-                break;
-            case 2:
-                entryElement = artikel.getHersteller();
-                break;
 
-            case 3:
-                entryElement = artikel.getBeschreibung();
-                break;
-            case 4:
-                entryElement = artikel.getMaterialangaben();
-                break;
-            case 5:
-                entryElement = artikel.getGeschlecht();
-                break;
-            case 6:
-                entryElement = artikel.getProduktart();
-                break;
-            case 7:
-                entryElement = artikel.getÄrmel();
-                break;
-            case 8:
-                entryElement = artikel.getBein();
-                break;
-            case 9:
-                entryElement = artikel.getKragen();
-                break;
-            case 10:
-                entryElement = artikel.getHerstellung();
-                break;
-            case 11:
-                entryElement = artikel.getTaschenart();
-                break;
-            case 12:
-                entryElement = artikel.getGrammatur();
-                break;
-            case 13:
-                entryElement = artikel.getMaterial();
-                break;
-            case 14:
-                entryElement = artikel.getUrsprungsland();
-                break;
-            case 15:
-                entryElement = artikel.getBildname();
-                break;
-        }
-
-        return entryElement;
-    }
 }

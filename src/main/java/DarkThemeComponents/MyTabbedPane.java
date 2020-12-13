@@ -39,4 +39,5 @@ public class MyTabbedPane extends JPanel{
         return tabbedPane;
     }
 
+
 }
