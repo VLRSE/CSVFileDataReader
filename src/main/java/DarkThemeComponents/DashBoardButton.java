@@ -6,28 +6,31 @@
 package DarkThemeComponents;
 
 
+import otherClasses.DarkThemeColor;
+
 import javax.swing.*;
 import java.awt.*;
+
+import static otherClasses.DarkThemeColor.SECONDARY_TEXT_COLOR;
 
 @SuppressWarnings("serial")
 public final class DashBoardButton extends JButton {
 
-    private Dimension size;
-    private final Color  TEXT_COLOR = Color.decode("#FAFAFA");
-
-
     public DashBoardButton(String text) {
         
         super (text);
-        super.setBackground(Color.decode("#424242"));
-        super.setForeground(Color.white);
-//        super.setBorder(BorderFactory.createEmptyBorder(10,24,10,24));
-            super.setOpaque(false);
-        this.setFocusPainted(false);
-        this.setBorderPainted(false);
-        this.setForeground(Color.white);
+        setBackground(Color.decode("#424242"));
+        setForeground(Color.white);
+        setBorder(BorderFactory.createEmptyBorder(16,24,16,24));
+        setOpaque(false);
+        setFocusPainted(false);
+        setBorderPainted(false);
+        setForeground(SECONDARY_TEXT_COLOR);
+
 
     }
 
-    
+    public DashBoardButton(String text, Icon icon) {
+        super(text, icon);
+    }
 }

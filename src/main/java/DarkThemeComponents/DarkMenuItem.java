@@ -18,16 +18,16 @@ public class DarkMenuItem extends JMenuItem {
     private final Color DEFAULT_TEXT_COLOR = Color.decode("#EEEEEE");
     private static final long serialVersionUID = 1L;
     private final String title;
-    private final JTabbedPane tabbedPane;
+    private final int tabIndex;
     
-    public DarkMenuItem(String title, JTabbedPane tabbedPane) {
+    public DarkMenuItem(String title, int tabIndex) {
         super(title,new ImageIcon("\\src\\main\\java\\Images\\dashboardIcon.png"));
         super.setForeground(DEFAULT_TEXT_COLOR);
         super.setBackground(DEFAULT_BG_COLOR);
         super.setAlignmentX(Component.RIGHT_ALIGNMENT);
         super.setEnabled(true);
         this.title = title;
-        this.tabbedPane = tabbedPane;
+        this.tabIndex = tabIndex;
     }
     
     
