@@ -1,6 +1,7 @@
 package DarkThemeComponents;
 
 import otherClasses.DarkThemeColor;
+import otherClasses.TinyImageIcon;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -86,7 +87,7 @@ public class DarkFrame extends JFrame {
 
             case "dashboard":
                 //set the width of dashboard Panel 1/4 of the total frame´s width, and the full height
-                panel.setPreferredSize(new Dimension((int)(frameWidth/8),frameHeight));
+                panel.setMinimumSize(new Dimension((int)(frameWidth/8),frameHeight));
                 break;
         }
 
@@ -103,28 +104,7 @@ public class DarkFrame extends JFrame {
     private void addDashboardComponents(JPanel dashboard){
 
         menuBar = new DashBoardMenuBar();
-
         dashboard.add(menuBar);
-        dashboard.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
-        DashBoardButton newTableButton = new DashBoardButton("NEW");
-
-        newTableButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DefaultTableModel tb = new DefaultTableModel();
-                tb.setColumnCount(16);
-                tb.setRowCount(30);
-//                tb.setColumnIdentifiers(columnIdentifiers);
-                JTable table = new JTable(tb);
-
-                tabbedPane.addTab("Untitled", null, new JScrollPane(table));
-                int currentViewTab = tabbedPane.getComponentCount() - 1;
-                tabbedPane.setSelectedIndex(currentViewTab);
-
-            }
-        });
-        dashboard.add(newTableButton);
-
 
     }
 
@@ -169,13 +149,10 @@ public class DarkFrame extends JFrame {
         progressBarPanel = new ProgressBarPanel(importPanel.getWidth());
         panel.add(progressBarPanel, c);
 
-
-
-        /*TODO: RESIZE ICON BEFORE ADDING TO THE TABBEDPANE*/
-        ImageIcon icon = new ImageIcon(getClass().getResource("/images/document-coloured.png"));
-        icon.getImage().getScaledInstance(10, 10, Image.SCALE_AREA_AVERAGING);
+        TinyImageIcon icon = new TinyImageIcon(getClass().getResource("/images/document-coloured.png"));
 
         tabbedPane.addTab("Start Seite", panel);
+        tabbedPane.setIconAt(0,icon );
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_S);
 
         centerPanel.add(tabbedPane);
@@ -215,7 +192,8 @@ public class DarkFrame extends JFrame {
     }
 
 
-    public DashBoardMenuBar getDashBoardMenuBar() {
+    public DashBoardMenuBar
+    getDashBoardMenuBar() {
         return menuBar;
     }
 

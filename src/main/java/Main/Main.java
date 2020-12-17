@@ -2,6 +2,7 @@ package Main;
 
 import DarkThemeComponents.*;
 
+import DarkThemeComponents.DarkMenuItem;
 import otherClasses.*;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -43,7 +45,7 @@ public class Main {
     private static JTextArea progressUpdate, fileSizeText, filenameLabel;
     private static List<Artikel> aList;
     private static DashBoardMenuBar menuBar;
-    private static DashBoardButton menuDatei, menuTabelle, menuEinstellungen, menuNeu;
+    private static DarkMenu menuDatei, menuTabelle, menuEinstellungen, menuNeu;
     private static JTabbedPane tabbedPane;
     private static List<Map<String, Path>> importedFiles;
     private  static Map<String, Path> filenameAndPath;
@@ -66,6 +68,9 @@ public class Main {
                 btnImport.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        //disable button to avoid duplicate import
+                        btnImport.setEnabled(false);
+
                         //shows the FileChooser dialogbox to let user choose a file to import
                         executeFileChooser();
                     }
@@ -94,15 +99,7 @@ public class Main {
 
         ProgressBarPanel progressBarPanel;
 
-        dashboard = frame.getDashboard();
-        menuBar = frame.getDashBoardMenuBar();
-
-        //get the reference to the Menus on the menuBar
-        menuDatei = menuBar.getMenuDatei();
-        menuTabelle = menuBar.getMenuTable();
-        menuEinstellungen = menuBar.getMenuEinstellungen();
-        menuNeu = menuBar.getMenuNewTable();
-
+        addDashboardButtons();
 
         //get import button reference from ImportPanel class int the frame to allow user to import CSV files
         btnImport = frame.getImportPanel().getBtnImport();
@@ -129,12 +126,29 @@ public class Main {
         panel container of the frame*/
     public static void addDashboardButtons(){
 
-        DashBoardButton newTableButton;
+
+        dashboard = frame.getDashboard();
+        menuBar = frame.getDashBoardMenuBar();
+        menuBar.setLayout( new BoxLayout(menuBar, BoxLayout.Y_AXIS));
+        menuBar.setOpaque(false);
 
 
-        newTableButton = new DashBoardButton("NEW");
+        //get the reference to the Menus on the menuBar
+        menuDatei = menuBar.getMenuDatei();
+//        menuBar.add(menuDatei);
 
-        newTableButton.addActionListener(new ActionListener() {
+        menuDatei.getMenu().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("adaflökerjaewrawere");
+            }
+        });
+
+        menuTabelle = menuBar.getMenuTabelle();
+        menuEinstellungen = menuBar.getMenuEinstellungen();
+        menuNeu = menuBar.getMenuNeuTabelle();
+
+        menuNeu.getMenu().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultTableModel tb = new DefaultTableModel();
@@ -146,10 +160,17 @@ public class Main {
                 tabbedPane.addTab("Untitled", null, new JScrollPane(table));
                 int currentViewTab = tabbedPane.getComponentCount() - 1;
                 tabbedPane.setSelectedIndex(currentViewTab);
+                table.addPropertyChangeListener(new PropertyChangeListener() {
+                    @Override
+                    public void propertyChange(PropertyChangeEvent evt) {
+                            /*TODO: Get editedRow and editedColumn numbers and the old and new Value*/
+                    }
+                });
+
 
             }
         });
-        dashboard.add(newTableButton);
+
 
     }
 
@@ -187,6 +208,7 @@ public class Main {
             //enable start button to import file
             btnStart.setForeground(PRIMARY_COLOR);
             btnStart.setEnabled(true);
+
             btnStart.addActionListener((ActionEvent e) -> {
                 try {
 
@@ -303,9 +325,7 @@ public class Main {
         int tabCount = tabbedPane.getComponentCount();
 
        if(tabCount == 1){
-
            tabbedPane.remove(tabCount-1);
-
        }
         tabbedPane.addTab(filename, createTable( tableModel));
 //        int position =  - 1;
@@ -317,10 +337,17 @@ public class Main {
 
     public static void addMenuItem(String title) {
         DarkMenuItem menuItem = new DarkMenuItem(title, tabbedPane.getSelectedIndex());
-        System.out.println(tabbedPane.getSelectedIndex());
+
+        menuItem.setIcon(new TinyImageIcon(Main.class.getResource("/images/document-coloured.png")));
+        menuDatei.addItem(menuItem);
+        menuDatei.getMenu().setEnabled(false);
+
+        System.out.println( menuDatei.getMenuItem(0).getText());
 
 
     }
+
+
 
     public static JScrollPane createTable(DefaultTableModel tableModel) {
 
@@ -346,4 +373,5 @@ public class Main {
 
         return scrollPane;
     }
+
 }

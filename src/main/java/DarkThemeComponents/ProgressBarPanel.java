@@ -16,7 +16,9 @@ import java.awt.event.ActionListener;
 
 /**
  *
- * @author Admin
+ * @author Vilrose Daquiado
+ *
+ *
  */
 public class ProgressBarPanel extends JPanel implements ActionListener {
 

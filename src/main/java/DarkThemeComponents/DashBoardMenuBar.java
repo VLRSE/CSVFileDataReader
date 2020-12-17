@@ -2,16 +2,20 @@ package DarkThemeComponents;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class DashBoardMenuBar extends JMenuBar {
-    private DashBoardButton btnDatei, btnTable, btnChart, btnEinstellungen, btnNewTable;
+    private DarkMenu menuDatei, menuTabelle, menuEinstellungen, menuNeuTabelle;
+    private ArrayList<DarkMenu> menuList ;
     private GridBagConstraints c;
+    private ButtonGroup buttonGroup;
 
     public DashBoardMenuBar( ) {
 
         setOpaque(false);
         setForeground(Color.white);
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(0,10,0,10));
         setAlignmentX(Component.CENTER_ALIGNMENT);
         setBorder(null);
         init();
@@ -19,51 +23,50 @@ public class DashBoardMenuBar extends JMenuBar {
 
     public void init(){
 
-        btnDatei = new DashBoardButton("Datei");
+
+        menuList = new ArrayList<>();
+
+        menuDatei = new DarkMenu("Datei");
+        menuTabelle = new DarkMenu("Tabelle");
+        menuEinstellungen = new DarkMenu("Einstellungen");
+        menuNeuTabelle = new DarkMenu("Neu Tabelle");
 
 
-        btnTable = new DashBoardButton("Tabelle");
-        btnChart = new DashBoardButton("Chart");
-        btnEinstellungen = new DashBoardButton("Einstellungen");
-        btnNewTable = new DashBoardButton("Neu Tabelle");
-
-
-        this.add( btnDatei);
-        this.add(btnTable);
-        this.add(btnChart);
-        this.add(btnEinstellungen);
+        menuList.add(menuDatei);
+        menuList.add(menuTabelle);
+        menuList.add(menuEinstellungen);
+        menuList.add(menuNeuTabelle);
 
 
 
-//        this.add( Box.createRigidArea(new Dimension(0,150)));
+        this.add(menuDatei);
+        this.add(menuTabelle);
+        this.add(menuEinstellungen);
+        this.add(menuNeuTabelle);
+
+////        this.add( Box.createRigidArea(new Dimension(0,150)));
 
 
 
     }
 
-    public DashBoardButton getMenuDatei() {
-        return btnDatei;
+    public DarkMenu getMenuDatei() {
+        return menuDatei;
     }
 
-    public DashBoardButton getMenuTable() {
-        return btnTable;
+    public DarkMenu getMenuTabelle() {
+        return menuTabelle;
     }
 
-    public DashBoardButton getMenuChart() {
-        return btnChart;
+    public DarkMenu getMenuEinstellungen() {
+        return menuEinstellungen;
     }
 
-    public DashBoardButton getMenuEinstellungen() {
-        return btnEinstellungen;
+    public DarkMenu getMenuNeuTabelle() {
+        return menuNeuTabelle;
     }
 
-
-    public DashBoardButton getMenuNewTable() {
-        return btnNewTable;
-    }
-
-    @Override
-    public JMenu getMenu(int index) {
-        return super.getMenu(index);
+    public ArrayList<DarkMenu> getMenuList() {
+        return menuList;
     }
 }
