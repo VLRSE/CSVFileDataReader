@@ -16,7 +16,7 @@ import java.util.List;
 public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
 
     private DarkMenuItem menuDatei, menuTabelle, menuEinstellungen, menuNeuTabelle;
-    private ButtonGroup buttonGroupMenu, btnGroupMenuItems;
+    private ButtonGroup  btnGroupMenuItems;
     private List<AbstractButton> menuItems;
     private JPanel menuItemsPanel;
     private JLabel iconArrow;
@@ -47,6 +47,7 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setOpaque(false);
 
+        btnGroupMenuItems = new ButtonGroup();
 
         //create a MenuItem instance that will act as the menu´s button
         menu = new DarkMenuItem(title);
@@ -120,22 +121,17 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
 
     public void addItem(AbstractButton menuItem){
         int oldValue = menuItemsPanel.getComponentCount();
-
+        btnGroupMenuItems.add(menuItem);
         this.menuItems.add(menuItem);
         this.menuItemsPanel.add(menuItem);
         menuItemsPanel.firePropertyChange("size", oldValue, (oldValue+1) );
         Color bg = menuItemsPanel.getBackground();
         menuItemsPanel.getComponent(menuItems.size()-1);
         btnGroup.add(menuItem);
-        menuItem.setSelected(true);
-
+        btnGroup.setSelected(menuItem.getModel(), true);
 
     }
 
-    public void addMenuItem(AbstractButton menuItem, Icon icon){
-        this.menuItems.add(menuItem);
-        this.menuItemsPanel.add(menuItem);
-    }
 
     private void showMenu(){
         new Thread(new Runnable() {
@@ -176,6 +172,10 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
     public AbstractButton getMenuItem(int index){
 
         return menuItems.get(index);
+    }
+
+    public List<AbstractButton> getMenuItems() {
+        return menuItems;
     }
 
     public int getTabIndex() {

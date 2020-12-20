@@ -3,6 +3,8 @@ package otherClasses;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
 
 /**
  *
@@ -52,6 +54,8 @@ public class FileChooser extends JFileChooser {
             }
         }
     }
+
+
 
     public File getFile() {
         return file;

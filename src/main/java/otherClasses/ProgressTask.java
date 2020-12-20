@@ -14,102 +14,90 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- *
  * @author Vilrose Daquiado
  */
 
 
-public class ProgressTask extends SwingWorker< List<Artikel>, Artikel> {
+public class ProgressTask extends SwingWorker<List<Artikel>, Artikel> {
 
     private final Path sourcePath;
-    public DefaultArtikelTableModel tableModel;
+    public DefaultTableModel tableModel;
     private int progress = 0;
     private List<Artikel> aList;
 
     private String result = "";
     private JTextArea textArea;
 
-    private String[] header;
+    private String[] HEADER = new String[]{"Hauptartikelnr", "ArtikelName", "Hersteller"
+            , "Beschreibung", "Materialangaben", "Geschlecht", "Produktart", "Ärmel"
+            , "Bein", "Kragen", "Herstellung", "Taschenart", "Grammatur", "Material"
+            , "Ursprungsland", "Bildname"};
+    ;
 
 
-    public ProgressTask(DefaultArtikelTableModel tableModel, Path sourcePath) {
+    public ProgressTask(DefaultTableModel tableModel, Path sourcePath) {
 
         this.tableModel = tableModel;
-        this.sourcePath =sourcePath;
+        this.sourcePath = sourcePath;
         this.textArea = textArea;
-         header = new String[]{"Hauptartikelnr", "ArtikelName", "Hersteller"
-                 , "Beschreibung", "Materialangaben", "Geschlecht", "Produktart", "Ärmel"
-                 , "Bein", "Kragen", "Herstellung", "Taschenart", "Grammatur", "Material", "Ursprungsland", "Bildname"};
 
     }
 
     @Override
-    protected  List<Artikel> doInBackground() throws Exception {
+    protected List<Artikel> doInBackground() throws Exception {
 
-
+        /* CSVParser from the com.apache.commons library
+         *get a CSV parser for a given file with a CSV Format Excel with delimiter(;)
+         * and passing HEADER as the parameter for the default header to the parser to be used for CSV parsing
+         * */
         CSVParser parser;
         CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');
         parser = CSVParser.parse(sourcePath.toFile(), Charset.forName("UTF-8")
-                , fmt.withHeader(header).withIgnoreEmptyLines());
+                , fmt.withHeader(HEADER).withIgnoreEmptyLines());
 
-
-
-
-
-        //get a list Collection of the CSVRecords
+        //stream the CSV parsed records
         Stream<CSVRecord> csvRecordStream = StreamSupport.stream(parser.spliterator(), false);
 
-
-        List<Artikel> artikelArray =  csvRecordStream.skip(1)
+        //collect the Artikel records into a list Collection
+        List<Artikel> artikelArray = csvRecordStream.skip(1)
                 .map(CSVRecord::toMap)                    //map the csvRecord entries
-             .map(csvRecord -> new Artikel(csvRecord))     //create a new otherClasses.Artikel for every entry
-         .collect(Collectors.toList());
-//collect the artikel entries into a list Collection
+                .map(csvRecord -> new Artikel(csvRecord))     //create a new otherClasses.Artikel for every entry
+                .collect(Collectors.toList());
 
 
+        long recordsToFind = artikelArray.size();
+        for (Artikel input : artikelArray) {
 
-
-    long recordsToFind = artikelArray.size();
-        for(Artikel input : artikelArray){
-//            System.out.println(input.toString());
             Thread.sleep(100);
-
-
+            //publish the lines to be able to process as chunks (allow entry to be added to the table)
             publish(input);
             progress++;
 
-//            System.out.println(recordsToFind+ " progress " +progress+" percent "+  100 * progress/recordsToFind);
-
-            setProgress((int) (100 * progress/recordsToFind));
-
-
-
-
+            //updates the progressbar. Showing how much of the total records was processed
+            setProgress((int) (100 * progress / recordsToFind));
 
         }
-
+        //return the Artikel record list to be able to retrieve when needed after the progress is done
         return artikelArray;
     }
 
     @Override
     protected void process(List<Artikel> chunks) {
-        Artikel record = chunks.get(chunks.size()-1);
+        //get the record that the doBackground method was published
+        Artikel record = chunks.get(chunks.size() - 1);
 
+        result = record.toString() + "\n";
 
-        result  = record.toString() + "\n";
-//        System.out.println(result.toString());
-
-        //update tableModel by adding entries
+        //update tableModel by adding records
         tableModel.addRow(record.toArray());
-
-
 
     }
 
     @Override
     protected void done() {
 
-        JOptionPane.showMessageDialog(null, "Datei wurde importiert", "Import erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Datei wurde importiert"
+                , "Import erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 
     }
 

@@ -11,11 +11,12 @@ public class DefaultArtikelTableModel extends DefaultTableModel {
             , "Beschreibung", "Materialangaben", "Geschlecht", "Produktart", "Ärmel"
             , "Bein", "Kragen", "Herstellung", "Taschenart", "Grammatur", "Material", "Ursprungsland", "Bildname"};
 
-    private ArrayList<Artikel> artikelList;
+    private List<Artikel> artikelList;
 
 
     public DefaultArtikelTableModel(ArrayList<Artikel> artikelList) {
-            this.artikelList = artikelList;
+
+        this.artikelList = artikelList;
     }
 
     public DefaultArtikelTableModel(){
@@ -27,73 +28,33 @@ public class DefaultArtikelTableModel extends DefaultTableModel {
         return artikelList;
     }
 
+
+
+    @Override
+    public void addRow(Object[] rowData) {
+        artikelList.add(new Artikel(rowData));
+    }
+
     @Override
     public int getColumnCount() {
         return 16;
     }
 
-//    @Override
-//    public Object getValueAt(int rowIndex, int columnIndex) {
-//        //get the Artikel entry at the rowIndex requested from the ArrayList
-//        Artikel artikel =  artikelList.get(rowIndex);
-//        //get an array of the artikel values
-//        Object entryElement = null;
-////                entryElement = artikel.toArray()[columnIndex];
-//
-//        switch (columnIndex){
-//            case 0:
-//               entryElement = artikel.getHauptartikelnr();
-//                break;
-//            case 1:
-//                entryElement = artikel.getArtikelName();
-//                break;
-//            case 2:
-//                entryElement = artikel.getHersteller();
-//                break;
-//
-//            case 3:
-//                entryElement = artikel.getBeschreibung();
-//                break;
-//            case 4:
-//                entryElement = artikel.getMaterialangaben();
-//                break;
-//            case 5:
-//                entryElement = artikel.getGeschlecht();
-//                break;
-//            case 6:
-//                entryElement = artikel.getProduktart();
-//                break;
-//            case 7:
-//                entryElement = artikel.getÄrmel();
-//                break;
-//            case 8:
-//                entryElement = artikel.getBein();
-//                break;
-//            case 9:
-//                entryElement = artikel.getKragen();
-//                break;
-//            case 10:
-//                entryElement = artikel.getHerstellung();
-//                break;
-//            case 11:
-//                entryElement = artikel.getTaschenart();
-//                break;
-//            case 12:
-//                entryElement = artikel.getGrammatur();
-//                break;
-//            case 13:
-//                entryElement = artikel.getMaterial();
-//                break;
-//            case 14:
-//                entryElement = artikel.getUrsprungsland();
-//                break;
-//            case 15:
-//                entryElement = artikel.getBildname();
-//                break;
-//        }
-//
-//        return entryElement;
-//    }
+    @Override
+    public int getRowCount() {
+        return artikelList.size();
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        return columnIdentifiers[column];
+    }
+
+    @Override
+    public Object getValueAt(int row, int column) {
+        Artikel artikel = artikelList.get(row);
+        return artikel.getItem(column);
+    }
 
 
 }

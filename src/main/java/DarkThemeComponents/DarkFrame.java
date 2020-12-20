@@ -4,11 +4,10 @@ import otherClasses.DarkThemeColor;
 import otherClasses.TinyImageIcon;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.util.Locale;
 
@@ -197,6 +196,29 @@ public class DarkFrame extends JFrame {
         return menuBar;
     }
 
+    public static class FrameDragListener extends MouseAdapter {
+
+        private final JFrame frame;
+        private Point mouseDownCoords = null;
+
+        // class constructor that requires a JFrame instance as parameter
+        public FrameDragListener (JFrame frame){
+            this.frame = frame;
+        }
+
+        public void mousePressed(MouseEvent e){
+            mouseDownCoords = e.getPoint();
+        }
+
+        public void mouseDragged(MouseEvent e){
+            Point currentCoords = e.getLocationOnScreen();
+            frame.setLocation(currentCoords.x - mouseDownCoords.x, currentCoords.y- mouseDownCoords.y);
+        }
+
+        public void mouseReleased(MouseEvent e){
+            mouseDownCoords = null;
+        }
+    }
 }
 
 

@@ -5,14 +5,17 @@
  */
 package DarkThemeComponents;
 
-import otherClasses.DarkThemeColor;
-
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,32 +30,24 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
     private JProgressBar progressBarPanel;
     private JProgressBar  progressBar ;
     private JTextArea progressUpdate, fileSize, filenameLabel;
-
-
-
-    private Dimension dm;
     private final Border border;
-    private final Color DEFAULT_BG_COLOR,SECONDARY_COLOR, SHADOW_COLOR, TEXT_COLOR;
+    private final Color DEFAULT_BG_COLOR  = Color.decode("#121212");;
+    private final Color SECONDARY_COLOR = Color.decode("#42A5F5");
+    private final Color SHADOW_COLOR = new Color((int)SECONDARY_COLOR.getRed(),
+            (int)SECONDARY_COLOR.getGreen(),(int) SECONDARY_COLOR.getBlue(),20);
+    private final Color TEXT_COLOR = Color.decode("#EEEEEE");
     private final int DEFAULT_WIDTH;
-    private final Font LABEL_FONT, TEXT_FONT;
+    private final Font LABEL_FONT = new Font("Montesarrat",Font.BOLD,10);
+    private final Font TEXT_FONT = new Font("Nunito Sans",Font.BOLD,9);
 
     public ProgressBarPanel(int width) {
 
         this.DEFAULT_WIDTH =  width;
-
-        this.DEFAULT_BG_COLOR = Color.decode("#212121");
-        this.SECONDARY_COLOR = Color.decode("#42A5F5");
-        this.SHADOW_COLOR = new Color((int)SECONDARY_COLOR.getRed(), (int)SECONDARY_COLOR.getGreen(),(int) SECONDARY_COLOR.getBlue(),20);
-        this.TEXT_COLOR = Color.decode("#EEEEEE");
-
-        this.LABEL_FONT = new Font("Nunito Sans",Font.BOLD,9);
-        this.TEXT_FONT = new Font("Montesarrat",Font.BOLD,10);
         this.border = BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, SHADOW_COLOR.brighter(), SHADOW_COLOR.brighter()
                 , SHADOW_COLOR, SHADOW_COLOR.brighter()), BorderFactory.createEmptyBorder(10,10,10,10));
         setBackground(DEFAULT_BG_COLOR);
         setBorder(border);
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-
 
         initComponents();
 
@@ -142,6 +137,7 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
         progressTextArea.setForeground(TEXT_COLOR.darker());
         progressTextArea.setFont(TEXT_FONT.deriveFont(Font.BOLD,10));
         progressTextArea.setOpaque(false);
+        progressTextArea.setEditable(false);
 
         return progressTextArea;
     }
@@ -190,6 +186,9 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
         return progressBar;
     }
 
+
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -197,17 +196,8 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
         if(source == btnStartCancel){
             btnStartCancel.setEnabled(false);
 
-            //toggle Start to Cancel button and vice versa
-//            if(btnStartCancel.getText().equalsIgnoreCase("Starten")){
-//                btnStartCancel.setText("Cancel");
-//                btnStartCancel.setOpaque(true);
-//                btnStartCancel.setBackground(Color.red.darker());
-//
-//            }
-//            else{
-//                btnStartCancel.setText("Starten");
-//                btnStartCancel.setOpaque(false);
-//            }
+
+
         }
         
     }

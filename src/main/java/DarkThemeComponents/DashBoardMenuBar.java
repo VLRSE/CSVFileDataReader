@@ -27,7 +27,7 @@ public class DashBoardMenuBar extends JMenuBar {
         menuList = new ArrayList<>();
 
         menuDatei = new DarkMenu("Datei");
-        menuTabelle = new DarkMenu("Tabelle");
+        menuTabelle = new DarkMenu("Diagramm");
         menuEinstellungen = new DarkMenu("Einstellungen");
         menuNeuTabelle = new DarkMenu("Neu Tabelle");
 

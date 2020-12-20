@@ -3,6 +3,18 @@ package Main;
 import DarkThemeComponents.*;
 
 import DarkThemeComponents.DarkMenuItem;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.ui.RectangleAnchor;
+import org.jfree.chart.ui.RectangleInsets;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.DefaultValueDataset;
 import otherClasses.*;
 
 import javax.swing.*;
@@ -14,14 +26,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.nio.file.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 /**
@@ -45,19 +56,19 @@ public class Main {
     private static JTextArea progressUpdate, fileSizeText, filenameLabel;
     private static List<Artikel> aList;
     private static DashBoardMenuBar menuBar;
-    private static DarkMenu menuDatei, menuTabelle, menuEinstellungen, menuNeu;
+    private static DarkMenu menuDatei, menuChart, menuEinstellungen, menuNeu;
     private static JTabbedPane tabbedPane;
     private static List<Map<String, Path>> importedFiles;
     private  static Map<String, Path> filenameAndPath;
     private static String[] header;
-    private static DefaultArtikelTableModel tableModel;
+    private static DefaultTableModel tableModel;
     private static final Color PRIMARY_COLOR = Color.decode("#42A5F5");
     private static final Font BUTTON_FONT = new Font(Font.SANS_SERIF, Font.BOLD, 12);
     private static final String[] columnIdentifiers = new String[]{"Hauptartikelnr", "ArtikelName", "Hersteller"
             , "Beschreibung", "Materialangaben", "Geschlecht", "Produktart", "Ärmel"
             , "Bein", "Kragen", "Herstellung", "Taschenart", "Grammatur", "Material", "Ursprungsland", "Bildname"};
 
-
+    private static List<DarkTable> tables ;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -72,7 +83,11 @@ public class Main {
                         btnImport.setEnabled(false);
 
                         //shows the FileChooser dialogbox to let user choose a file to import
-                        executeFileChooser();
+                        try {
+                            executeFileChooser();
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
                     }
                 });
             }catch (FileNotFoundException ex) {
@@ -120,6 +135,9 @@ public class Main {
         /**/
         importedFiles = new ArrayList<>();
         filenameAndPath= new HashMap<>();
+
+        //a list where to save the tables that will be created
+        tables = new ArrayList<>();
     }
 
     /*a method that creates DashBoardButton instances to be added to the dashboard(left panel)
@@ -135,16 +153,35 @@ public class Main {
 
         //get the reference to the Menus on the menuBar
         menuDatei = menuBar.getMenuDatei();
-//        menuBar.add(menuDatei);
 
-        menuDatei.getMenu().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("adaflökerjaewrawere");
+
+        menuChart = menuBar.getMenuTabelle();
+        menuChart.getMenu().addActionListener(l ->{
+        JPanel panelCharts = new JPanel();
+
+            if(!aList.isEmpty() && aList != null){
+                //a panel that will hold all of the charts
+
+                panelCharts.setLayout(new BorderLayout());
+                panelCharts.add(new JLabel("Artikel"), BorderLayout.PAGE_START);
+
+               ChartPanel chartPanel =  new ChartPanel(createChart("Hersteller"));
+               chartPanel.setBackground(DarkThemeColor.PRIMARY_BG_COLOR);
+               chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+               chartPanel.validate();
+               chartPanel.repaint();
+
+                DefaultCategoryDataset valueDataset = new DefaultCategoryDataset();
+
+
+
+               tabbedPane.add("Chart ", chartPanel);
+               tabbedPane.setSelectedIndex( tabbedPane.getComponentCount() - 1);
+            }
+            else{
+                JOptionPane.showMessageDialog(frame, "Noch keine Datei importiert");
             }
         });
-
-        menuTabelle = menuBar.getMenuTabelle();
         menuEinstellungen = menuBar.getMenuEinstellungen();
         menuNeu = menuBar.getMenuNeuTabelle();
 
@@ -180,7 +217,7 @@ public class Main {
     * and triggers the btnStart (to start file import)
     */
 
-    public static void executeFileChooser(){
+    public static void executeFileChooser() throws IOException {
         //show fileChooser dialog box
         FileChooser fileChooser = new FileChooser(centerPanel);
         /*
@@ -192,6 +229,11 @@ public class Main {
 
             path = fileChooser.getFile().toPath();
             filename = path.getFileName().toString();
+
+            //check if file had been already imported
+//           boolean fileExists =  checkAlreadyImported(path);
+//            System.out.println(fileExists + " new File: ");
+
             //calculate the file size
             fileSize = fileChooser.getFileSize();
             //get whether the file size type is in KB, MB or GB
@@ -253,26 +295,10 @@ public class Main {
         String stringFormatted = String.format("%.02f",  fileSize );
         fileSizeText.setText(""+stringFormatted  + fileType+ " of " +stringFormatted +" " +fileType);
 
-        tableModel = new DefaultArtikelTableModel() ;
-        JTable table = new JTable(tableModel);
+        tableModel = new DefaultTableModel() ;
+
         task = new ProgressTask(tableModel, path);
-
-        tableModel.setColumnIdentifiers(header);
-
-        JScrollPane scrollPane = new JScrollPane(table,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS
-                , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-       JPanel panel  = new JPanel(new BorderLayout());
-        panel.setPreferredSize(new Dimension(500, 70));
-
-        table.setPreferredScrollableViewportSize(new Dimension(500, 70));//
-        table.setFillsViewportHeight(true);
-        scrollPane.setViewportView(table);
-
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        progressBar.setBorderPainted(true);
+          progressBar.setBorderPainted(true);
 
 
         //Checks whether the file already exists in the imported file text file
@@ -324,13 +350,16 @@ public class Main {
 
         int tabCount = tabbedPane.getComponentCount();
 
-       if(tabCount == 1){
-           tabbedPane.remove(tabCount-1);
-       }
+//       if(tabCount == 1){
+//           tabbedPane.remove(tabCount-1);
+//       }
+
+
         tabbedPane.addTab(filename, createTable( tableModel));
-//        int position =  - 1;
-//        tabbedPane.setSelectedIndex(position);
-//        tabbedPane.setForegroundAt(position, Color.darkGray);
+        int currentViewTab = tabbedPane.getComponentCount() - 1;
+        tabbedPane.setSelectedIndex(currentViewTab);
+//
+
         //add a menuItem to the menubar with the newly-imported file´s name
         addMenuItem(filename);
     }
@@ -340,25 +369,50 @@ public class Main {
 
         menuItem.setIcon(new TinyImageIcon(Main.class.getResource("/images/document-coloured.png")));
         menuDatei.addItem(menuItem);
-        menuDatei.getMenu().setEnabled(false);
-
-        System.out.println( menuDatei.getMenuItem(0).getText());
-
 
     }
+
+
 
 
 
     public static JScrollPane createTable(DefaultTableModel tableModel) {
 
         JScrollPane scrollPane;
-        JTable table;
+        DarkTable table;
 
-        table = new JTable(tableModel);
+        table = new DarkTable(tableModel);
+//
+//        if(table.isEditing()){
+//            System.out.println("editor value" + table.getCellEditor().getCellEditorValue());
+//        }
+
+       table.getModel().addTableModelListener(evt ->{
+
+           int column =  evt.getColumn();
+           int row = evt.getFirstRow();
+
+           System.out.println("value " + tableModel.getValueAt(row, column)+ "column "+ column+ "row "+ row);
+       });
+//            table.addPropertyChangeListener(new PropertyChangeListener() {
+//                @Override
+//                public void propertyChange(PropertyChangeEvent evt) {
+//                    System.out.println("property name: " +evt.getPropertyName());
+//                }
+//            });
+
+
+        if(table.isEditing()){
+            System.out.println("Editor value  "+ table.getCellEditor().getCellEditorValue());
+            System.out.println("is editing");
+        }
+
+
         scrollPane = new JScrollPane(table,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS
                 , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+        tables.add(table);
 
         table.setPreferredScrollableViewportSize(new Dimension(500, 70));//
         table.setFillsViewportHeight(true);
@@ -367,11 +421,96 @@ public class Main {
         tabbedPane.add(scrollPane);
         int position = tabbedPane.getComponentCount() - 1;
         tabbedPane.setSelectedIndex(position);
-//        tabbedPane.setForegroundAt(position, Color.darkGray);
-        //add a menuItem to the menubar with the newly-imported file´s name
-
 
         return scrollPane;
+    }
+
+    public static JFreeChart createChart(String chartTitle){
+
+        String hersteller ;
+        double herstellerCount;
+        double max = 0.0;
+        String maxHersteller = "";
+
+        Map<String, Long> herstellersList = aList.stream()
+                .collect(Collectors.groupingBy(Artikel::getHersteller, Collectors.counting()));
+
+        // @param herstellers colllected list of distinct
+       Object[] herstellers = herstellersList.keySet().toArray();
+
+        DefaultPieDataset dataset = new DefaultPieDataset();
+
+        for (int i = 0; i < herstellers.length; i++) {
+           hersteller = ""+herstellers[i];
+            herstellerCount = herstellersList.get(hersteller).doubleValue();
+
+            if(herstellerCount > max){
+
+                maxHersteller += hersteller;
+            }
+
+            dataset.setValue(hersteller, herstellerCount);
+        }
+
+
+
+        JFreeChart chart = ChartFactory.createPieChart3D(chartTitle, dataset, true, true, false);
+
+        PiePlot3D plot = (PiePlot3D)chart.getPlot();
+
+
+        PieChart3D pieChart3D = new PieChart3D(chartTitle, plot);
+
+        plot.setExplodePercent(maxHersteller, 0.90);
+
+
+        return pieChart3D;
+    }
+
+    private static boolean checkAlreadyImported(Path sourcePath ) throws IOException {
+
+        boolean fileExist = false;
+
+        Path destPath = Paths.get("resources/files" + sourcePath.getFileName().toString());
+
+        try {
+            Files.copy(sourcePath, destPath);
+
+
+        } catch (FileAlreadyExistsException e) {
+            fileExist = true;
+
+            int returnVal = JOptionPane.showOptionDialog(null
+                    , " \nMöchten Sie die Datei ersetzen?", "Datei ist bereits verügbar!"
+                    , JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE
+                    , null, new Object[]{"Ja", "Nein", "Abbrechen"}, JOptionPane.YES_OPTION);
+
+
+            switch (returnVal) {
+                case JOptionPane.OK_OPTION:
+                    int answer = JOptionPane.showOptionDialog(null, "Sind Sie sicher?"
+                            , "Confirm", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE
+                            , null, new Object[]{"Ja", "Abbrechen"}, JOptionPane.YES_OPTION);
+                    if (answer == JOptionPane.OK_OPTION) {
+                        path = sourcePath;
+//                        Files.copy(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
+                        break;
+                    }
+                    break;
+
+
+                case JOptionPane.NO_OPTION:
+//                    Path target = Paths.get("src/Files/" + sourcePath.getFileName().toString() + "-Copy");
+//                    Files.copy(sourcePath, target, StandardCopyOption.COPY_ATTRIBUTES);
+                    break;
+
+                default:
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace(System.err);
+        }
+        return fileExist;
     }
 
 }

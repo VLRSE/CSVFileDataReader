@@ -10,6 +10,10 @@ import java.util.*;
 public class Artikel extends List {
 
     private final Map<String, String> rowMap;
+    private String[] HEADERS = {"Hauptartikelnr","ArtikelName", "Hersteller", "Beschreibung", "Materialangaben",
+                                "Geschlecht", "Produktart", "Ärmel", "Bein", "Kragen", "Herstellung", "Taschenart",
+                                 "Grammatur",  "Material",  "Ursprungsland", "Bildname"   };
+
     private String Hauptartikelnr, ArtikelName, Hersteller
             , Beschreibung, Materialangaben, Geschlecht, Produktart, Ärmel
             , Bein, Kragen, Herstellung, Taschenart, Grammatur, Material, Ursprungsland, Bildname;
@@ -24,6 +28,7 @@ public class Artikel extends List {
         this.Beschreibung = rowMap.get("Beschreibung");
         this.Materialangaben = rowMap.get("Materialangaben");
         this.Geschlecht     = rowMap.get("Geschlecht");
+
         this.Produktart = rowMap.get("Produktart");
         this.Ärmel  = rowMap.get("Ärmel");
         this.Bein   = rowMap.get("Bein");
@@ -35,6 +40,56 @@ public class Artikel extends List {
         this.Ursprungsland  = rowMap.get("Ursprungsland");
         this.Bildname   = rowMap.get("Bildname").replace("\\.{0,1}", "");
 
+    }
+
+
+    public Artikel( Object[] row) {
+        this.rowMap = new HashMap<>();
+
+        for (int i = 0; i < row.length; i++) {
+            String key = HEADERS[i];
+            String value = row[i].toString();
+//            if( value.isEmpty() || value == null){
+            rowMap.put(key, value );
+//            }
+//            else{
+//
+//            }
+
+        }
+
+        this.Hauptartikelnr = rowMap.get("Hauptartikelnr").replace(".", "");
+        this.ArtikelName = rowMap.get("ArtikelName");
+        this.Hersteller = rowMap.get("Hersteller");
+        this.Beschreibung = rowMap.get("Beschreibung");
+        this.Materialangaben = rowMap.get("Materialangaben");
+        this.Geschlecht     = rowMap.get("Geschlecht");
+
+        this.Produktart = rowMap.get("Produktart");
+        this.Ärmel  = rowMap.get("Ärmel");
+        this.Bein   = rowMap.get("Bein");
+        this.Kragen = rowMap.get("Kragen");
+        this.Herstellung    = rowMap.get("Herstellung");
+        this.Taschenart = rowMap.get("Taschenart");
+        this.Grammatur  = rowMap.get("Grammatur");
+        this.Material   = rowMap.get("Material");
+        this.Ursprungsland  = rowMap.get("Ursprungsland");
+        this.Bildname   = rowMap.get("Bildname").replace("\\.{0,1}", "");
+
+    }
+
+    public void toArtikel(Object[] array){
+        for (int i = 0; i < array.length; i++) {
+            String key = HEADERS[i];
+            String value = array[i].toString();
+//            if( value.isEmpty() || value == null){
+                rowMap.put(key, null );
+//            }
+//            else{
+//
+//            }
+
+        }
     }
 
 
@@ -54,22 +109,81 @@ public class Artikel extends List {
     }
 
     @Override
-    public void select(int index) {
-        super.select(index);
+    public String getItem(int index) {
+        String item = "";
+        switch (index){
+            case 0:
+                item = getHauptartikelnr();
+                break;
+
+            case 1:
+                item = getArtikelName();
+                break;
+            case 2:
+                item = getHersteller();
+                break;
+            case 3:
+                item = getBeschreibung();
+                break;
+
+            case 4:
+                item = getMaterialangaben();
+                break;
+            case 5:
+                item = getGeschlecht();
+                break;
+
+            case 6:
+                item = getProduktart();
+                break;
+
+            case 7:
+                item = getÄrmel();
+                break;
+
+            case 8:
+                item = getBein();
+                break;
+
+
+            case 9:
+                item = getKragen();
+                break;
+
+
+            case 10:
+                item = getHerstellung();
+                break;
+
+
+            case 11:
+                item = getTaschenart();
+                break;
+
+            case 12:
+                item = getGrammatur();
+                break;
+
+
+            case 13:
+                item = getMaterial();
+                break;
+
+            case 14:
+                item = getUrsprungsland();
+                break;
+
+            case 15:
+                item = getBildname();
+                break;
+
+        }
+
+        return item;
     }
 
-    @Override
-    public synchronized String getSelectedItem() {
-        return super.getSelectedItem();
-    }
-
-    @Override
-    public synchronized String[] getItems() {
-        return super.getItems();
-    }
-
-    public Map<String, String> toMap(){
-        return rowMap;
+    public Artikel toMap(){
+        return this;
     }
 
 

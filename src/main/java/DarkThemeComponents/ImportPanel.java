@@ -9,14 +9,19 @@ package DarkThemeComponents;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.*;
 
 /**
  *
  * @author Admin
  */
 @SuppressWarnings("serial")
-public class ImportPanel extends JPanel  {
+public class ImportPanel extends JPanel  implements ActionListener {
     private final Color DEFAULT_BG_COLOR = Color.decode("#424242"),PRIMARY_COLOR = Color.decode("#42A5F5"), PRIMARY_DARKER = Color.decode("#0D47A1")
             , PRIMARY_LIGHTER = Color.decode("#64B5F6")
             ,TRANSPARENT_COLOR= new Color(PRIMARY_DARKER.getRed(), PRIMARY_DARKER.getGreen(), PRIMARY_DARKER.getBlue(),20),
@@ -139,5 +144,17 @@ public class ImportPanel extends JPanel  {
     public JButton getBtnImport() {
         return btnImport;
     }
-    
+
+
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+
+        if(source == btnImport){
+            btnImport.setEnabled(false);
+        }
+
+    }
 }

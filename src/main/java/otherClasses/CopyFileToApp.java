@@ -18,21 +18,20 @@ public class CopyFileToApp {
 
     private Path destPath, sourcePath;
 
-    public CopyFileToApp(Path sourcePath) {
+    CopyFileToApp(Path sourcePath) {
         this.sourcePath =  sourcePath;
 
     }
 
-    CopyFileToApp() {
+     CopyFileToApp() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void initComponents() throws IOException{
+    void initComponents() throws IOException{
 
         destPath = Paths.get("src/Files/"+sourcePath.getFileName().toString());
 
         //create  otherClasses.FilesImported instance and save the imported files
-
 
         try{
             Files.copy(sourcePath, destPath);
@@ -52,6 +51,7 @@ public class CopyFileToApp {
                             , null, new Object[] {"Ja", "Abbrechen"}, JOptionPane.YES_OPTION);
                     if(answer ==JOptionPane.OK_OPTION ){
                         Files.copy(sourcePath, destPath, StandardCopyOption.REPLACE_EXISTING);
+                        return;
                     }
                     break;
 

@@ -14,6 +14,7 @@ import static otherClasses.DarkThemeColor.SECONDARY_TEXT_COLOR;
 public class DarkMenuItem extends JButton implements ActionListener {
     private Icon menuIcon;
     private String title;
+    private final Font TEXT_FONT = new Font(Font.SANS_SERIF,Font.ROMAN_BASELINE,12);
 
     public DarkMenuItem() {
 
@@ -52,10 +53,11 @@ public class DarkMenuItem extends JButton implements ActionListener {
     protected void init(String title, Icon icon, int mnemonic){
 
         setBackground(DarkThemeColor.SECONDARY_BG_COLOR);
-        setForeground(SECONDARY_TEXT_COLOR);
-//        setOpaque(false);
+        setForeground(DarkThemeColor.PRIMARY_TEXT_COLOR);
         setFocusPainted(false);
         setBorderPainted(false);
+//        setOpaque(false);
+        setFont(TEXT_FONT);
         setLayout( new BoxLayout(this, BoxLayout.Y_AXIS));
         this.addActionListener(this);
 
