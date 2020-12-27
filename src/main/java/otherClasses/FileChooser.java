@@ -5,6 +5,10 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -19,6 +23,8 @@ public class FileChooser extends JFileChooser {
     private final Container parent;
     private float fileSize;
     private String sizeType;
+    private List<File> importedFiles;
+
 
     public FileChooser(Container parent){
         // set the directory path to the current directory
@@ -38,11 +44,17 @@ public class FileChooser extends JFileChooser {
     }
 
     public final void init(){
+
+        importedFiles = new ArrayList<>();
         fileSize = 0;
-        if(returnVal == JFileChooser.APPROVE_OPTION){
+
+            if(returnVal == JFileChooser.APPROVE_OPTION){
+
             /*save the file selected when Upload button was clicked*/
             file = this.getSelectedFile();
             fileSize = file.length();
+
+            importedFiles.add(file);
 
             if(fileSize >= 1024 && fileSize <(Math.pow(1024, 2))){
                 fileSize /= 1024;
@@ -55,7 +67,9 @@ public class FileChooser extends JFileChooser {
         }
     }
 
-
+    public List<File> getImportedFiles() {
+        return importedFiles;
+    }
 
     public File getFile() {
         return file;

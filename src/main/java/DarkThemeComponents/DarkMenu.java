@@ -51,6 +51,8 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
 
         //create a MenuItem instance that will act as the menu´s button
         menu = new DarkMenuItem(title);
+
+
         menu.addActionListener(this);
         if (menuIcon != null){
             menu.setIcon(menuIcon);
@@ -64,13 +66,14 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
         URL iconURL;
 
         //create a button instance to hold the title and respond to ActionListener
-        iconURL = getClass().getResource("/images/folder.png");
-        menu = new DarkMenuItem(title, new TinyImageIcon(iconURL));
+
+        menu = new DarkMenuItem(title);
 
         //create a label that hold the arrow to show/hide the MenuItems
         iconURL = getClass().getResource("/images/arrow_left.png");
         iconArrow = new JLabel(new TinyImageIcon(iconURL, 18,18));
         iconArrow.addMouseListener(this);
+
 
 
         //check if the parameters are null or not
@@ -91,6 +94,7 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
         //add an arrow to the Menu panel to allow users to show and hide MenuItems
         iconArrow.setVisible(false);
         panel.add(iconArrow);
+        panel.setAlignmentX(SwingConstants.LEADING);
         this.add(panel);
 
 
@@ -116,30 +120,40 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
 
     }
 
+    public Icon getMenuIcon() {
+        return menuIcon;
+    }
 
+    public void setMenuIcon(Icon menuIcon) {
+        this.menuIcon = menuIcon;
+        menu.setIcon(menuIcon);
+
+    }
 
 
     public void addItem(AbstractButton menuItem){
         int oldValue = menuItemsPanel.getComponentCount();
         btnGroupMenuItems.add(menuItem);
-        this.menuItems.add(menuItem);
-        this.menuItemsPanel.add(menuItem);
-        menuItemsPanel.firePropertyChange("size", oldValue, (oldValue+1) );
+        menuItems.add(menuItem);
+        menuItemsPanel.add(menuItem);
+        menuItemsPanel.setAlignmentX(SwingConstants.LEADING);
+        menuItemsPanel.setBorder(BorderFactory.createEmptyBorder(0,5,0,0));
+
+
+
+
         Color bg = menuItemsPanel.getBackground();
         menuItemsPanel.getComponent(menuItems.size()-1);
         btnGroup.add(menuItem);
         btnGroup.setSelected(menuItem.getModel(), true);
 
+        menuItemsPanel.firePropertyChange("size", oldValue, (oldValue+1) );
+
     }
 
 
     private void showMenu(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                menuItemsPanel.setVisible(true);
-            }
-        }).start();
+        new Thread(() -> menuItemsPanel.setVisible(true)).start();
     }
     private void hideMenu(){
         new Thread(new Runnable() {
@@ -169,6 +183,8 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
     }
 
 
+
+
     public AbstractButton getMenuItem(int index){
 
         return menuItems.get(index);
@@ -186,7 +202,7 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
         this.tabIndex = tabIndex;
     }
 
-    public AbstractButton getMenu(){
+    public AbstractButton getMenuButton(){
         return this.menu;
     }
 

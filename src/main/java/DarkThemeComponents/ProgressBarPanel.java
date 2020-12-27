@@ -5,17 +5,15 @@
  */
 package DarkThemeComponents;
 
+import otherClasses.DarkThemeColor;
+import otherClasses.TinyImageIcon;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -26,7 +24,7 @@ import java.util.List;
 public class ProgressBarPanel extends JPanel implements ActionListener {
 
     private JPanel  filenamePanel;
-    private JButton btnStartCancel, btnCancel;   
+    private JButton btnStart, btnCancel;
     private JProgressBar progressBarPanel;
     private JProgressBar  progressBar ;
     private JTextArea progressUpdate, fileSize, filenameLabel;
@@ -88,12 +86,26 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
         fileNamePanel.add(filenameLabel);
 
          //create JButton instance for start import action
-        btnStartCancel = addJButton("STARTEN",SECONDARY_COLOR);
-        btnStartCancel.setEnabled(false);
-        btnStartCancel.addActionListener(this);
+        TinyImageIcon iconStart = new TinyImageIcon(getClass().getResource("/images/play-green.png"), 10,12);
+        btnStart =  createButton(iconStart);
+        iconStart = new TinyImageIcon(getClass().getResource("/images/play.png"), 10,12);
+        btnStart.setDisabledIcon(iconStart);
+        btnStart.setToolTipText("Import Starten");
 
-        //add start button to the top panel
-        fileNamePanel.add(btnStartCancel);
+        TinyImageIcon icon = new TinyImageIcon(getClass().getResource("/images/pause-red.png"), 10,12);
+        btnCancel = createButton(icon);
+        TinyImageIcon iconDisabled = new TinyImageIcon(getClass().getResource("/images/pause.png"), 10,12);
+        btnCancel.setDisabledIcon(iconDisabled);
+        btnCancel.setVisible(false);
+        btnCancel.setToolTipText("Import Abbrechen");
+
+
+
+        //add start and canel buttons to the top panel
+        fileNamePanel.add(btnStart);
+        fileNamePanel.add(btnCancel);
+
+
         
         return fileNamePanel;
     }
@@ -143,19 +155,22 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
     }
 
     //a method that creates a JTextArea instance and customize its attributes
-    public JButton addJButton(String text, Color foreground){
+    public JButton createButton(TinyImageIcon icon){
         JButton button;
     
-        button = new JButton(text);   
+        button = new JButton();
         button.setBackground(DEFAULT_BG_COLOR.darker());
         button.setAlignmentX(Component.RIGHT_ALIGNMENT);
         button.setHorizontalAlignment(SwingConstants.RIGHT);
-        button.setFont(LABEL_FONT);
-        button.setForeground(foreground);
+        button.setIcon(icon);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
+        button.setOpaque(false);
         button.setBorder(null);
+        button.setEnabled(false);
         button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        button.addActionListener(this);
+
 
         return button;
     
@@ -166,9 +181,12 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
     }
 
     public JButton getBtnStart() {
-        return btnStartCancel;
+        return btnStart;
     }
-   
+
+    public JButton getBtnCancel() {
+        return btnCancel;
+    }
 
     public JProgressBar getProgressBarPanel() {
         return progressBarPanel;
@@ -193,10 +211,16 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         
-        if(source == btnStartCancel){
-            btnStartCancel.setEnabled(false);
-
-
+        if(source == btnStart){
+//            btnStart.setEnabled(false);
+            btnStart.setVisible(false);
+            btnCancel.setVisible(true);
+            /*TODO: cancel Swingworker background when btnCancel is clicked*/
+            btnCancel.setEnabled(false);
+        }
+        else if(source == btnCancel){
+            btnCancel.setVisible(false);
+            btnStart.setVisible(true);
 
         }
         

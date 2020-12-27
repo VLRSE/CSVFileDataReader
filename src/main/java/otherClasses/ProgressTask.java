@@ -57,7 +57,10 @@ public class ProgressTask extends SwingWorker<List<Artikel>, Artikel> {
 
         //stream the CSV parsed records
         Stream<CSVRecord> csvRecordStream = StreamSupport.stream(parser.spliterator(), false);
+        if (Thread.interrupted()) {
+            System.out.println("We've been interrupted: no more crunching.");
 
+        }
         //collect the Artikel records into a list Collection
         List<Artikel> artikelArray = csvRecordStream.skip(1)
                 .map(CSVRecord::toMap)                    //map the csvRecord entries
@@ -95,9 +98,12 @@ public class ProgressTask extends SwingWorker<List<Artikel>, Artikel> {
 
     @Override
     protected void done() {
+        if (Thread.interrupted()){
+            System.out.println("thread has been interrupted");
+        }
 
-        JOptionPane.showMessageDialog(null, "Datei wurde importiert"
-                , "Import erfolgreich", JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null, "Datei wurde importiert"
+//                , "Import erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 
     }
 

@@ -13,8 +13,8 @@ import java.net.URL;
  */
 
 public class TinyImageIcon extends ImageIcon {
-    private final int DEFAULT_WIDTH = 16,
-            DEFAULT_HEIGHT = 16;
+    private final int DEFAULT_WIDTH = 20,
+            DEFAULT_HEIGHT = 20;
     private String filename;
 
     public TinyImageIcon(String filename, String description) {
@@ -32,6 +32,7 @@ public class TinyImageIcon extends ImageIcon {
         resizeImage(DEFAULT_WIDTH,DEFAULT_HEIGHT);
 
     }
+
 
     private void resizeImage( int width, int height){
         //resize the image to make it smaller

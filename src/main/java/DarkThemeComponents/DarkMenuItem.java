@@ -56,9 +56,13 @@ public class DarkMenuItem extends JButton implements ActionListener {
         setForeground(DarkThemeColor.PRIMARY_TEXT_COLOR);
         setFocusPainted(false);
         setBorderPainted(false);
-//        setOpaque(false);
+        setOpaque(false);
         setFont(TEXT_FONT);
         setLayout( new BoxLayout(this, BoxLayout.Y_AXIS));
+//        setBorder(BorderFactory.createEmptyBorder(5,10,10,10));
+        setAlignmentX(SwingConstants.LEFT);
+
+
         this.addActionListener(this);
 
          if(icon != null){
@@ -77,6 +81,13 @@ public class DarkMenuItem extends JButton implements ActionListener {
 
     }
 
+    public Icon getMenuIcon() {
+        return menuIcon;
+    }
+
+    public void setMenuIcon(Icon menuIcon) {
+        this.menuIcon = menuIcon;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -86,6 +97,6 @@ public class DarkMenuItem extends JButton implements ActionListener {
     @Override
     public void setSelected(boolean b) {
         super.setSelected(b);
-        setBackground(DarkThemeColor.PRIMARY_BG_COLOR);
+        setBackground(DarkThemeColor.PRIMARY_BG_COLOR.darker());
     }
 }

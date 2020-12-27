@@ -1,6 +1,7 @@
 package DarkThemeComponents;
 
 import otherClasses.DarkThemeColor;
+import otherClasses.FileChooser;
 import otherClasses.TinyImageIcon;
 
 import javax.swing.*;
@@ -26,20 +27,20 @@ public class DarkFrame extends JFrame {
 
         super(title);
 
-        super.setMinimumSize(new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2
-        ),
-                (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2)) );
+        super.setMinimumSize(new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.65
+        ), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()*0.65)) );
 
-        super.setResizable(true);
-        super.getContentPane().setBackground(DarkThemeColor.PRIMARY_BG_COLOR);
-        super.setLocale(Locale.GERMANY);
+        setResizable(true);
+        getContentPane().setBackground(DarkThemeColor.PRIMARY_BG_COLOR);
+        setLocale(Locale.GERMANY);
+
 
         //position the frame in the middle of the screen.
 
-        super.setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
 
         init();
-        super.pack();
+        pack();
 
     }
 
@@ -101,7 +102,7 @@ public class DarkFrame extends JFrame {
 
     }
     private void addDashboardComponents(JPanel dashboard){
-
+        System.out.println(dashboard.getSize());
         menuBar = new DashBoardMenuBar();
         dashboard.add(menuBar);
 
@@ -110,7 +111,33 @@ public class DarkFrame extends JFrame {
     private void addTopPanelComponents(JPanel topPanel){
         //add Menubar on topPanel
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
-        topPanel.add(new DashBoardButton("File"));
+
+        JMenuBar menuBar;
+        JMenu menuFile;
+        DarkMenuItem menuItemOpen, menuItemSave;
+
+        menuBar = new JMenuBar();
+        menuBar.setOpaque(false);
+        menuBar.setBorderPainted(false);
+        menuFile = new JMenu("File");
+        menuFile.setBackground(SECONDARY_BG_COLOR);
+
+        menuFile.setForeground(DarkThemeColor.PRIMARY_TEXT_COLOR);
+        menuItemOpen = new DarkMenuItem("Öffnen");
+
+        menuItemSave = new DarkMenuItem("Speichern");
+        menuFile.add(menuItemOpen);
+        menuFile.add(menuItemSave);
+
+
+        menuBar.add(menuFile);
+
+        menuItemOpen.addActionListener(l -> {
+            FileChooser fileChooser = new FileChooser(this);
+
+        });
+
+        topPanel.add(menuBar);
         topPanel.add(new DashBoardButton("Edit"));
         
     }
@@ -191,8 +218,7 @@ public class DarkFrame extends JFrame {
     }
 
 
-    public DashBoardMenuBar
-    getDashBoardMenuBar() {
+    public DashBoardMenuBar getDashBoardMenuBar() {
         return menuBar;
     }
 

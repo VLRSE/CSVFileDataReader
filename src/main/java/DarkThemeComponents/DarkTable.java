@@ -4,12 +4,11 @@ import otherClasses.CustomizeCellRenderer;
 import otherClasses.DarkThemeColor;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 
 public class DarkTable extends JTable implements TableCellRenderer {
@@ -21,6 +20,8 @@ public class DarkTable extends JTable implements TableCellRenderer {
     public DarkTable() {
         init();
     }
+
+
 
     public void init() {
 
@@ -43,6 +44,13 @@ public class DarkTable extends JTable implements TableCellRenderer {
         getModel().addTableModelListener(this);
         putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         getModel().addTableModelListener(new MyTableModelListener());
+
+        getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                setEnabled(getSelectedRowCount() > 0);
+            }
+        });
 
     }
 
@@ -74,15 +82,47 @@ public class DarkTable extends JTable implements TableCellRenderer {
             int row = e.getFirstRow();
             int column = e.getColumn();
 
+
             TableModel model = (TableModel) e.getSource();
             String columnName = model.getColumnName(column);
             Object value = model.getValueAt(row, column);
-
             firePropertyChange("new value", null, value );
+
             System.out.println("Edited row " + row + " column "+ column + " columnName " + columnName + " value " + value.toString());
 
 
 
+        }
+    }
+
+    private class CustomizedTableModel extends AbstractTableModel {
+
+        public CustomizedTableModel() {
+            System.out.println(getColumnModel().getSelectedColumns());
+
+            addTableModelListener(l -> {
+                if( l.getType() == TableModelEvent.DELETE){
+                    fireTableRowsDeleted(l.getFirstRow(), l.getLastRow());
+                }
+
+            });
+        }
+
+
+
+        @Override
+        public int getRowCount() {
+            return 0;
+        }
+
+        @Override
+        public int getColumnCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return null;
         }
     }
 

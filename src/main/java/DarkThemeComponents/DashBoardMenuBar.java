@@ -1,47 +1,76 @@
 package DarkThemeComponents;
 
+import Main.Main;
+import otherClasses.TinyImageIcon;
+
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class DashBoardMenuBar extends JMenuBar {
-    private DarkMenu menuDatei, menuTabelle, menuEinstellungen, menuNeuTabelle;
+    private DarkMenu menuDatei, menuDiagramm, menuEinstellungen, menuNeuTabelle;
     private ArrayList<DarkMenu> menuList ;
     private GridBagConstraints c;
     private ButtonGroup buttonGroup;
 
-    public DashBoardMenuBar( ) {
+    public DashBoardMenuBar() {
 
         setOpaque(false);
         setForeground(Color.white);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBorder(BorderFactory.createEmptyBorder(0,10,0,10));
-        setAlignmentX(Component.CENTER_ALIGNMENT);
-        setBorder(null);
+
         init();
     }
 
-    public void init(){
+    private void init(){
+
+        URL iconURL;
+
+        TinyImageIcon icon;
 
 
         menuList = new ArrayList<>();
 
         menuDatei = new DarkMenu("Datei");
-        menuTabelle = new DarkMenu("Diagramm");
+        menuDiagramm = new DarkMenu("Diagramm");
         menuEinstellungen = new DarkMenu("Einstellungen");
         menuNeuTabelle = new DarkMenu("Neu Tabelle");
 
 
+        iconURL = getClass().getResource("/images/folder.png");
+        icon = new TinyImageIcon(iconURL);
+        menuDatei.setMenuIcon(icon);
+
+        iconURL = getClass().getResource("/images/chart.png");
+        icon = new TinyImageIcon(iconURL);
+        menuDiagramm.setMenuIcon(icon);
+
+        iconURL = getClass().getResource("/images/settings.png");
+        icon = new TinyImageIcon(iconURL);
+        menuEinstellungen.setMenuIcon(icon);
+
+        iconURL = getClass().getResource("/images/insert-table.png");
+        icon = new TinyImageIcon(iconURL);
+        menuNeuTabelle.setMenuIcon(icon);
+
+        //add each MenuItem to the menuList Collection
         menuList.add(menuDatei);
-        menuList.add(menuTabelle);
+        menuList.add(menuDiagramm);
         menuList.add(menuEinstellungen);
         menuList.add(menuNeuTabelle);
 
 
 
         this.add(menuDatei);
-        this.add(menuTabelle);
+
+
+        this.add(menuDiagramm);
+
+
         this.add(menuEinstellungen);
+
+
         this.add(menuNeuTabelle);
 
 ////        this.add( Box.createRigidArea(new Dimension(0,150)));
@@ -54,8 +83,8 @@ public class DashBoardMenuBar extends JMenuBar {
         return menuDatei;
     }
 
-    public DarkMenu getMenuTabelle() {
-        return menuTabelle;
+    public DarkMenu getMenuDiagramm() {
+        return menuDiagramm;
     }
 
     public DarkMenu getMenuEinstellungen() {
