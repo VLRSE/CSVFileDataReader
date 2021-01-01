@@ -102,7 +102,6 @@ public class DarkFrame extends JFrame {
 
     }
     private void addDashboardComponents(JPanel dashboard){
-        System.out.println(dashboard.getSize());
         menuBar = new DashBoardMenuBar();
         dashboard.add(menuBar);
 

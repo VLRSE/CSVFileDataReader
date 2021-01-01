@@ -9,15 +9,31 @@
     <version>1.0-SNAPSHOT</version>
     <dependencies>
         <dependency>
-            <groupId>com.CSVDataProcessing</groupId>
-            <artifactId>CSVProcessing_App</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.5.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart-fx</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.8</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
@@ -26,7 +42,6 @@
     </properties>
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -45,7 +60,14 @@
                         <manifestFile>src/main/resources/META-MANIFEST.MF</manifestFile>
                     </archive>
                 </configuration>
-
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.5</version>
+                <configuration>
+                    <mainClass>HelloFX</mainClass>
+                </configuration>
             </plugin>
 
         </plugins>

@@ -10,5 +10,8 @@
         <module name="CSVFileDataReader-update" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="jfreechart" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
