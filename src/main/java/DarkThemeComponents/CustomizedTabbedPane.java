@@ -16,6 +16,9 @@ import java.io.FileNotFoundException;
 public class CustomizedTabbedPane extends JTabbedPane{
 
     private static final long serialVersionUID = 1L;
+    private TabbedPaneWithCloseBTN tabbedPaneWithCloseBTN;
+
+
 
 
     public CustomizedTabbedPane() throws FileNotFoundException {
@@ -27,6 +30,11 @@ public class CustomizedTabbedPane extends JTabbedPane{
         insets.set(-1,-1,-1,-1);
         UIManager.put("TabbedPane.contentBorderInsets", insets);
 
+
+
+
     }
+
+
 
 }

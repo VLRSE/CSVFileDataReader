@@ -18,7 +18,7 @@ import static otherClasses.DarkThemeColor.SECONDARY_BG_COLOR;
 public class DarkFrame extends JFrame {
 
     private JPanel dashboard, centerPanel, topPanel, bottomPanel, rightPanel;
-    private CustomizedTabbedPane tabbedPane;
+    private TabbedPaneWithCloseBTN tabbedPane;
     private  ImportPanel importPanel;
     private ProgressBarPanel progressBarPanel;
     private DashBoardMenuBar menuBar;
@@ -108,7 +108,7 @@ public class DarkFrame extends JFrame {
     }
 
     private void addTopPanelComponents(JPanel topPanel){
-        //add Menubar on topPanel
+        //add a horizontal Menubar on topPanel of the frame
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
 
         JMenuBar menuBar;
@@ -153,8 +153,9 @@ public class DarkFrame extends JFrame {
 
     //change the background color of the selected panel on the tabbedPane
         UIManager.put("TabbedPane.selected", SECONDARY_BG_COLOR);
-        tabbedPane = new CustomizedTabbedPane();
 
+        /*set properties of a parent panel that will hold the importPanel
+        and progressBarPanel to be added on the centerPanel of the frame*/
         panel.setLayout(new GridBagLayout());
         panel.setBackground(PRIMARY_BG_COLOR);
 
@@ -171,20 +172,23 @@ public class DarkFrame extends JFrame {
         c.gridx = 0;
         c.gridy = 1;
 
+        //add progressbarPanel to the
         progressBarPanel = new ProgressBarPanel(importPanel.getWidth());
         panel.add(progressBarPanel, c);
 
         TinyImageIcon icon = new TinyImageIcon(getClass().getResource("/images/document-coloured.png"));
 
-        tabbedPane.addTab("Start Seite", panel);
-        tabbedPane.setIconAt(0,icon );
-        tabbedPane.setMnemonicAt(0, KeyEvent.VK_S);
+        tabbedPane = new TabbedPaneWithCloseBTN();
+        tabbedPane.addTabNoCloseBTn( "Start Seite", panel, icon);
+        tabbedPane.setMnemonicAt(tabbedPane.getTabCount()-1,KeyEvent.VK_S);
 
+        //add tabbedpane to the centerpanel of the frame
         centerPanel.add(tabbedPane);
 
     }
 
     public JPanel getDashboard() {
+
         return dashboard;
     }
 
@@ -204,7 +208,7 @@ public class DarkFrame extends JFrame {
         return rightPanel;
     }
 
-    public CustomizedTabbedPane getTabbedPane() {
+    public JTabbedPane getTabbedPane() {
         return tabbedPane;
     }
 
