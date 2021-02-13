@@ -2,27 +2,23 @@ package DarkThemeComponents;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.PieSectionLabelGenerator;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.ui.RectangleAnchor;
 import org.jfree.chart.ui.RectangleInsets;
 import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 import otherClasses.DarkThemeColor;
 
 import java.awt.*;
 
 public class DarBarChart {
 
-    private String title;
-    private String categoryAxisLabel;
-    private String valueAxisLabel;
-    private CategoryDataset dataset;
-    private Plot plot;
+    private final String title;
+    private final String categoryAxisLabel;
+    private final String valueAxisLabel;
+    private final CategoryDataset dataset;
+    private final Plot plot;
     private final JFreeChart chart;
     private final Color PRIMARY_BG_COLOR = DarkThemeColor.SECONDARY_BG_COLOR;
 

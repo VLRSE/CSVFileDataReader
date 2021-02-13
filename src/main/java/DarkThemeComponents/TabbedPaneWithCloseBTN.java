@@ -100,7 +100,7 @@ public class TabbedPaneWithCloseBTN  extends JTabbedPane {
 
     public class CloseTabListener implements MouseListener{
 
-        private Component tabToClose;
+        private final Component tabToClose;
 
         public CloseTabListener(Component tab) {
             this.tabToClose = tab;

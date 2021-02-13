@@ -82,12 +82,12 @@ public class DarkFrame extends JFrame {
         switch (name.toLowerCase()){
 
             case "toppanel":
-                panel.setPreferredSize(new Dimension(frameWidth, (int)frameHeight/18));
+                panel.setPreferredSize(new Dimension(frameWidth, frameHeight /18));
                 break;
 
             case "dashboard":
                 //set the width of dashboard Panel 1/4 of the total frame´s width, and the full height
-                panel.setMinimumSize(new Dimension((int)(frameWidth/8),frameHeight));
+                panel.setMinimumSize(new Dimension(frameWidth/8,frameHeight));
                 break;
         }
 

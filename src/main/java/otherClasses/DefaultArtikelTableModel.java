@@ -11,7 +11,7 @@ public class DefaultArtikelTableModel extends DefaultTableModel {
             , "Beschreibung", "Materialangaben", "Geschlecht", "Produktart", "Ärmel"
             , "Bein", "Kragen", "Herstellung", "Taschenart", "Grammatur", "Material", "Ursprungsland", "Bildname"};
 
-    private List<Artikel> artikelList;
+    private final List<Artikel> artikelList;
 
 
     public DefaultArtikelTableModel(ArrayList<Artikel> artikelList) {

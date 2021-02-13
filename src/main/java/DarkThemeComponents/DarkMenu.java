@@ -22,7 +22,7 @@ public class DarkMenu extends JPanel  implements ActionListener, MouseListener {
     private JLabel iconArrow;
     private DarkMenuItem menu;
     private Icon menuIcon;
-    private String title;
+    private final String title;
     private ButtonGroup btnGroup;
     private int tabIndex = -1;
 

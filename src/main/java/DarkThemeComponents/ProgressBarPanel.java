@@ -5,7 +5,6 @@
  */
 package DarkThemeComponents;
 
-import otherClasses.DarkThemeColor;
 import otherClasses.TinyImageIcon;
 
 import javax.swing.*;
@@ -29,10 +28,10 @@ public class ProgressBarPanel extends JPanel implements ActionListener {
     private JProgressBar  progressBar ;
     private JTextArea progressUpdate, fileSize, filenameLabel;
     private final Border border;
-    private final Color DEFAULT_BG_COLOR  = Color.decode("#121212");;
+    private final Color DEFAULT_BG_COLOR  = Color.decode("#121212");
     private final Color SECONDARY_COLOR = Color.decode("#42A5F5");
-    private final Color SHADOW_COLOR = new Color((int)SECONDARY_COLOR.getRed(),
-            (int)SECONDARY_COLOR.getGreen(),(int) SECONDARY_COLOR.getBlue(),20);
+    private final Color SHADOW_COLOR = new Color(SECONDARY_COLOR.getRed(),
+            SECONDARY_COLOR.getGreen(), SECONDARY_COLOR.getBlue(),20);
     private final Color TEXT_COLOR = Color.decode("#EEEEEE");
     private final int DEFAULT_WIDTH;
     private final Font LABEL_FONT = new Font("Montesarrat",Font.BOLD,10);

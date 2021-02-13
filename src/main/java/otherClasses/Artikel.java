@@ -10,13 +10,26 @@ import java.util.*;
 public class Artikel extends List {
 
     private final Map<String, String> rowMap;
-    private String[] HEADERS = {"Hauptartikelnr","ArtikelName", "Hersteller", "Beschreibung", "Materialangaben",
+    private final String[] HEADERS = {"Hauptartikelnr","ArtikelName", "Hersteller", "Beschreibung", "Materialangaben",
                                 "Geschlecht", "Produktart", "Ärmel", "Bein", "Kragen", "Herstellung", "Taschenart",
                                  "Grammatur",  "Material",  "Ursprungsland", "Bildname"   };
 
-    private String Hauptartikelnr, ArtikelName, Hersteller
-            , Beschreibung, Materialangaben, Geschlecht, Produktart, Ärmel
-            , Bein, Kragen, Herstellung, Taschenart, Grammatur, Material, Ursprungsland, Bildname;
+    private final String Hauptartikelnr;
+    private final String ArtikelName;
+    private final String Hersteller;
+    private final String Beschreibung;
+    private final String Materialangaben;
+    private final String Geschlecht;
+    private final String Produktart;
+    private final String Ärmel;
+    private final String Bein;
+    private final String Kragen;
+    private final String Herstellung;
+    private final String Taschenart;
+    private final String Grammatur;
+    private final String Material;
+    private final String Ursprungsland;
+    private final String Bildname;
 
     public Artikel( Map<String, String> rowMap) {
 

@@ -3,7 +3,7 @@ package otherClasses;
 import java.util.*;
 
 public class ArtikelList extends ArrayList implements List {
-    private ArrayList <Artikel> artikelArrayList ;
+    private final ArrayList <Artikel> artikelArrayList ;
 
     public ArtikelList(int initialCapacity, ArrayList<Artikel> artikelArrayList) {
         super(initialCapacity);

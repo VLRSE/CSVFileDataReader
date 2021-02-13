@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class FileChooser extends JFileChooser {
 
-    private int returnVal;
+    private final int returnVal;
     //    private final JFileChooser jFileChooser;
     private File file;
     private final Container parent;

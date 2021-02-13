@@ -6,7 +6,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,11 +28,10 @@ public class ProgressTask extends SwingWorker<List<Artikel>, Artikel> {
     private String result = "";
     private JTextArea textArea;
 
-    private String[] HEADER = new String[]{"Hauptartikelnr", "ArtikelName", "Hersteller"
+    private final String[] HEADER = new String[]{"Hauptartikelnr", "ArtikelName", "Hersteller"
             , "Beschreibung", "Materialangaben", "Geschlecht", "Produktart", "Ärmel"
             , "Bein", "Kragen", "Herstellung", "Taschenart", "Grammatur", "Material"
             , "Ursprungsland", "Bildname"};
-    ;
 
 
     public ProgressTask(DefaultTableModel tableModel, Path sourcePath) {
@@ -45,6 +44,7 @@ public class ProgressTask extends SwingWorker<List<Artikel>, Artikel> {
 
     @Override
     protected List<Artikel> doInBackground() throws Exception {
+        System.out.println("Progess task has started");
 
         /* CSVParser from the com.apache.commons library
          *get a CSV parser for a given file with a CSV Format Excel with delimiter(;)
@@ -52,7 +52,7 @@ public class ProgressTask extends SwingWorker<List<Artikel>, Artikel> {
          * */
         CSVParser parser;
         CSVFormat fmt = CSVFormat.EXCEL.withDelimiter(';');
-        parser = CSVParser.parse(sourcePath.toFile(), Charset.forName("UTF-8")
+        parser = CSVParser.parse(sourcePath.toFile(), StandardCharsets.UTF_8
                 , fmt.withHeader(HEADER).withIgnoreEmptyLines());
 
         //stream the CSV parsed records

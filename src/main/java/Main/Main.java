@@ -1,10 +1,8 @@
 package Main;
 
 import DarkThemeComponents.*;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import otherClasses.*;
@@ -19,8 +17,9 @@ import java.beans.PropertyChangeEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -129,7 +128,7 @@ public class Main {
         tabbedPane = frame.getTabbedPane();
 
         /*Initialize a list and Map Collections with key as the Path of the imported file
-        * and value as the streamed list of Artikel*/
+         * and value as the streamed list of Artikel*/
         importedFilesAndTableModelMap = new HashMap<>();
         importedFilesAndRecordsMap =  new HashMap<>();
         //        importedFiles = new ArrayList<>();
@@ -153,20 +152,20 @@ public class Main {
         menuChart.getMenuButton().addActionListener(l ->{
             if(!importedFilesAndRecordsMap.isEmpty() && importedFilesAndRecordsMap != null){
 
-            /*call the createChartsPanel method to create PieChart3D and a barchart
-            * and to create a JPanel instance to hold the created a PieChart3D and a barchart
-            */
-            JPanel panelCharts;
-            panelCharts = createChartsPanel();
+                /*call the createChartsPanel method to create PieChart3D and a barchart
+                 * and to create a JPanel instance to hold the created a PieChart3D and a barchart
+//                 */
+                JPanel panelCharts;
+                panelCharts = createChartsPanel();
 
 //            createChart("Artikel");
 
-            //add the panelCharts to the tabbedPane as selected component view
-            TinyImageIcon icon = new TinyImageIcon(Main.class.getResource("/images/chart.png"));
-            tabbedPane.add(panelCharts, icon);
-                System.out.println(tabbedPane.getTabCount());
-            int selectedIndex = tabbedPane.getTabCount()-1;
-            tabbedPane.setSelectedIndex( selectedIndex);
+                //add the panelCharts to the tabbedPane as selected component view
+                TinyImageIcon icon = new TinyImageIcon(Main.class.getResource("/images/chart.png"));
+                tabbedPane.add(panelCharts, icon);
+
+                int selectedIndex = tabbedPane.getTabCount()-1;
+                tabbedPane.setSelectedIndex( selectedIndex);
 
             }
             else{
@@ -187,8 +186,8 @@ public class Main {
 
                 //TODO:add Listener to the table model to be notified for changes fired in the table cells
                 tableModel1.addTableModelListener((TableModelEvent l) -> {
-                int row = l.getFirstRow();
-                int column = l.getColumn();
+                    int row = l.getFirstRow();
+                    int column = l.getColumn();
 
 
                 });
@@ -203,10 +202,10 @@ public class Main {
 
 
     /*
-    *a method that will instantiate a FileChooser object, get the path of every file imported,
-    * get the filesize and the filesize type(KB,MB,GB). This method also updates the filenameLabel
-    * and triggers the btnStart (to start file import)
-    */
+     *a method that will instantiate a FileChooser object, get the path of every file imported,
+     * get the filesize and the filesize type(KB,MB,GB). This method also updates the filenameLabel
+     * and triggers the btnStart (to start file import)
+     */
 
     public static void executeFileChooser() throws IOException {
         //show fileChooser dialog box
@@ -231,8 +230,8 @@ public class Main {
 
             btnStart.addActionListener((ActionEvent e) -> {
                 try {
-                        //call method for this action
-                        btnStartActionPerformed(fileChooser);
+                    //call method for this action
+                    btnStartActionPerformed(fileChooser);
 
                 }
                 catch (IOException ex) {
@@ -327,7 +326,7 @@ public class Main {
 
                             importedFilesAndRecordsMap.put(filename, streamedRecords);
                             importedFilesAndTableModelMap.put(filename, tableModel);
-                           int lastIndex = importedFilesAndRecordsMap.size()-1;
+                            int lastIndex = importedFilesAndRecordsMap.size()-1;
 //                            importedFilesMap.put(path, tableModel);
 
                         } catch (InterruptedException e) {
@@ -356,26 +355,26 @@ public class Main {
 
     }
     /* Method to add a tabular representation of the file date  or a new tabular data of the same
-    ** schema to the tabbedPane and is set as the selected index. The filename is set as the tabbed title
-    * */
+     ** schema to the tabbedPane and is set as the selected index. The filename is set as the tabbed title
+     * */
     public static void addTabAndItem(String filename, DefaultTableModel tableModel) {
 
         int tabCount = tabbedPane.getComponentCount();
 
-       /*remove the import panel*/
-       if(tabCount == 1 && !filename.equalsIgnoreCase("Untitled")){
-           tabbedPane.remove(tabCount-1);
-       }
+        /*remove the import panel*/
+        if(tabCount == 1 && !filename.equalsIgnoreCase("Untitled")){
+            tabbedPane.remove(tabCount-1);
+        }
         /* call the createTable method to create a table for the csv streamed data, and assign the returned value
-        *(Scrollpane instance that holds the table ) to csvDataTable
-        */
+         *(Scrollpane instance that holds the table ) to csvDataTable
+         */
         csvDataTable =  createTable( tableModel);
         tabbedPane.addTab(filename,csvDataTable);
 
         int currentViewTab = tabbedPane.getTabCount()-1 ;
-       if(currentViewTab != -1){
-           tabbedPane.setSelectedIndex(currentViewTab);
-       }
+        if(currentViewTab != -1){
+            tabbedPane.setSelectedIndex(currentViewTab);
+        }
 
 
         /*add a menuItem to the menubar with the newly-imported file´s name*/
@@ -383,7 +382,7 @@ public class Main {
     }
 
     /*Method to add the filename of the newly created table to the menu on the dashboardon the left panel
-    */
+     */
 
     public static void addMenuItem(String title) {
         DarkMenuItem menuItem = new DarkMenuItem(title, tabbedPane.getSelectedIndex());
@@ -405,9 +404,9 @@ public class Main {
         /*add tableModelListener to the table´s tablemodel to get the location of the edited data*/
         tableModel.addTableModelListener(evt ->{
 
-           int column =  evt.getColumn();
-           int row = evt.getFirstRow();
-       });
+            int column =  evt.getColumn();
+            int row = evt.getFirstRow();
+        });
 
 
         scrollPane = new JScrollPane(table,
@@ -421,52 +420,45 @@ public class Main {
         /*add the scrollPane containing the table to the tabbedPane and set as selected index*/
         tabbedPane.add(scrollPane);
 
-       // int position = tabbedPane.getComponentCount()-1 ;
+        // int position = tabbedPane.getComponentCount()-1 ;
         //tabbedPane.setSelectedIndex(position);
 
         return scrollPane;
     }
-
     /*
      * Method to create JFreeChar´s Barchart instance and return a panel that contains it
      * */
-    public static JFreeChart createBarChart(String title, List collectionToDisplay, Collector<Artikel, ?, Map<String, Long>> column ){
-
+    public static ChartPanel createBarChart(String title, List collectionToDisplay, Collector<Artikel, ?, Map<String, Long>> column ){
+        JFreeChart produktartBarChart;
+        ChartPanel produktartBarChartPanel;
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        /*TODO: move this to createChartPanels method and iterate to create graph for each headers*/
 
 
         /*stream the list collection to compute the sum of distinct entries*/
         Map<String, Long> materialList = (Map<String, Long>) collectionToDisplay.stream()
                 .collect(column);
 
-     /*  List collectionToDisplay =  importedFilesAndRecordsMap.get(selectedIndexFilename);
-        Map<String, Long> geschlectList = (Map<String, Long>) collectionToDisplay.stream()
-                .collect(Collectors.groupingBy(Artikel::getGeschlecht, Collectors.counting()));
-
-        Map<String, Long> urprungsLand = (Map<String, Long>) importedFilesAndRecordsMap.get(selectedIndexFilename);*/
-
-
-//        dataset.setGroup(new DatasetGroup("material"));
         for (Object material: materialList.keySet() ) {
-            dataset.setValue(materialList.get(material).doubleValue(), material.toString(), "Material" );
+            dataset.setValue(materialList.get(material).doubleValue(), material.toString(), title );
         }
 
-        // @param herstellers collected list of distinct hersteller names or  keys from the herstellerslist
-        Object[] materials = materialList.keySet().toArray();
 
-        JFreeChart barchart = ChartFactory.createBarChart(title, "Kategorie", "Zahl",dataset
-                , PlotOrientation.VERTICAL, true, true, false);
+        DarkBarChart barchart = new DarkBarChart(title, dataset);
 
-        return barchart;
+        produktartBarChart = barchart.getChart();
+        produktartBarChartPanel = new ChartPanel(produktartBarChart);
+        produktartBarChartPanel.setBorder(BorderFactory.createLineBorder(DarkThemeColor.SECONDARY_TEXT_COLOR, 1, false));
+        produktartBarChartPanel.setLayout(new GridLayout(1,1));
+
+        return produktartBarChartPanel;
 
     }
+
 
     /*
      * Method to create JFreeChar´s Piechart instance and return a panel that contains it
      * */
-
-    public static JFreeChart createPieChart(String chartTitle,List collectionToDisplay, Collector<Artikel, ?, Map<String, Long>> column ){
+    public static JFreeChart createPieChart(String chartTitle, List collectionToDisplay, Collector<Artikel, ?, Map<String, Long>> column ){
 
         String hersteller ;
         double herstellerCount;
@@ -494,14 +486,12 @@ public class Main {
 
         return pieChart3D.getChart();
     }
-
-
     /*
      * Method to create a JPanel instance that will hold the JFreeChart objects it
      * */
     public static JPanel createChartsPanel(){
-       String[] pieCharts = {"Geschlecht", "Kragen", "Ursprungsland" };
-        String[] barCharts = {"Produktart", "Herstellung", "Kragen",  };
+        String[] pieCharts = {"Hersteller", "Geschlecht" };
+        String[] barCharts = {"Ursprungsland", "Herstellung"};
 
         /*get the chosen file´s data to represent in a graph*/
         List<String> fileToGraph = getCollectionToDisplay();
@@ -510,16 +500,18 @@ public class Main {
         JPanel panelCharts = new JPanel();
         panelCharts.setLayout(new GridLayout(1,3));
 
-        Collector<Artikel, ?, Map<String, Long>> herstellersList = Collectors.groupingBy(Artikel::getHersteller, Collectors.counting());
-
-        JFreeChart herstellerPieChart = createPieChart("Hersteller", fileToGraph,herstellersList);
-        ChartPanel herstellerPieChartPanel =  new ChartPanel(herstellerPieChart);
-        panelCharts.add(herstellerPieChartPanel,BorderLayout.LINE_END );
+        Collector<Artikel, ?, Map<String, Long>> produktartList = Collectors.groupingBy(Artikel::getProduktart, Collectors.counting());
 
 
-       /*create a PieCharts and BarCharts for the chart representation of selected column Identifiers from the selected file*/
+        ChartPanel produktartBarChartPanel = createBarChart("Produktart",fileToGraph, produktartList);
+        panelCharts.add(produktartBarChartPanel, BorderLayout.LINE_END );
+
+
+        /*create a PieCharts and BarCharts for the chart representation of selected column Identifiers from the selected file*/
         String currentIdentifierForPieChart, currentIdentifierForBarChart;
         for (int i= 0; i< pieCharts.length; i++) {
+
+            /*Create a panel instance to hold two charts, vertically aligned, for each column */
 
             JPanel innerPanel = new JPanel();
             innerPanel.setLayout(new GridLayout(2,1));
@@ -534,21 +526,22 @@ public class Main {
 
 
             if(i == 0){
+                /*Collectors for the pieChart -- sums up the number of counts for each distinct entries of Hersteller*/
+                currentListForPieChart = Collectors.groupingBy(Artikel::getHersteller, Collectors.counting());
+
+                /*Collectors for the barChart -- sums up the number of counts for each distinct entries of Ursprungsland*/
+                currentListForBarChart = Collectors.groupingBy(Artikel::getUrsprungsland, Collectors.counting());
+
+
+            }
+            else {
+                /*Collectors for the pieChart -- sums up the number of counts for each distinct entries of Geschlecht*/
                 currentListForPieChart = Collectors.groupingBy(Artikel::getGeschlecht, Collectors.counting());
 
-                currentListForBarChart = Collectors.groupingBy(Artikel::getProduktart, Collectors.counting());
-
-            }
-            else if(i == 1){
-                currentListForPieChart = Collectors.groupingBy(Artikel::getKragen, Collectors.counting());
-
+                /*Collectors for the pieChart -- sums up the number of counts for each distinct entries of Herstellung*/
                 currentListForBarChart = Collectors.groupingBy(Artikel::getHerstellung, Collectors.counting());
             }
-            else{
-                currentListForPieChart = Collectors.groupingBy(Artikel::getUrsprungsland, Collectors.counting());
 
-                currentListForBarChart = Collectors.groupingBy(Artikel::getKragen, Collectors.counting());
-            }
 
             /* Create pieChart and its panel*/
 
@@ -559,20 +552,14 @@ public class Main {
 
 
             /* Create barChart and its panel*/
-            JFreeChart barChart = createBarChart(currentIdentifierForBarChart,fileToGraph, currentListForBarChart);
-            ChartPanel barChartPanel = new ChartPanel(barChart);
-            barChartPanel.setPreferredSize(new Dimension(panelCharts.getWidth() /4, panelCharts.getHeight() /4));
-            barChartPanel.setLayout(new GridLayout(5,1));
+            ChartPanel barChartPanel = createBarChart(currentIdentifierForBarChart,fileToGraph, currentListForBarChart);
+            panelCharts.add(produktartBarChartPanel, BorderLayout.LINE_END );
 
             //add the charts to the panelCharts to layout them
             innerPanel.add(barChartPanel, BorderLayout.LINE_END);
 
             panelCharts.add(innerPanel, BorderLayout.LINE_START);
         }
-
-
-
-
 
         return panelCharts;
 

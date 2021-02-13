@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 
 public class CopyFileToApp {
 
-    private Path destPath, sourcePath;
+    private final Path sourcePath;
 
     CopyFileToApp(Path sourcePath) {
         this.sourcePath =  sourcePath;
@@ -29,7 +29,7 @@ public class CopyFileToApp {
 
     void initComponents() throws IOException{
 
-        destPath = Paths.get("src/Files/"+sourcePath.getFileName().toString());
+        Path destPath = Paths.get("src/Files/" + sourcePath.getFileName().toString());
 
         //create  otherClasses.FilesImported instance and save the imported files
 

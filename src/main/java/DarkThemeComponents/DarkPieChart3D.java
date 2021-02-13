@@ -5,21 +5,21 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot3D;
-import org.jfree.chart.plot.Plot;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.ui.RectangleAnchor;
 import org.jfree.chart.ui.RectangleInsets;
-import org.jfree.data.general.Dataset;
 import org.jfree.data.general.DefaultPieDataset;
 import otherClasses.DarkThemeColor;
-
 import java.awt.*;
-import java.util.Collections;
+
+
 
 public class DarkPieChart3D {
-    private String title;
-    private PiePlot3D plot;
+
+    private final String title;
+    private final PiePlot3D plot;
+    private final DefaultPieDataset dataset;
     private final JFreeChart chart;
     private final Color PRIMARY_BG_COLOR = DarkThemeColor.SECONDARY_BG_COLOR;
 
@@ -30,6 +30,7 @@ public class DarkPieChart3D {
         chart = ChartFactory.createPieChart3D(title, dataset, true, true, false);
 
         this.plot = (PiePlot3D)chart.getPlot();
+        this.dataset = dataset;
         this.title = title;
 
 
@@ -44,7 +45,7 @@ public class DarkPieChart3D {
 
         TextTitle textTitle = chart.getTitle();
         textTitle.setPaint(DarkThemeColor.PRIMARY_TEXT_COLOR);
-        textTitle.setFont(new Font("Sans-serif", Font.BOLD, 14));
+        textTitle.setFont(new Font("Sans-serif", Font.BOLD, 18));
 
 
         final PieSectionLabelGenerator labelGenerator = new StandardPieSectionLabelGenerator("{0} = {1}");
@@ -58,7 +59,6 @@ public class DarkPieChart3D {
         plot.setLabelGenerator(labelGenerator);
         plot.setLabelBackgroundPaint(Color.decode("#BBDEFB"));
 
-
         LegendTitle legend =  chart.getLegend();
         legend.setBackgroundPaint(DarkThemeColor.SECONDARY_BG_COLOR);
         legend.setItemPaint(DarkThemeColor.SECONDARY_TEXT_COLOR);
@@ -66,6 +66,9 @@ public class DarkPieChart3D {
         legend.setItemPaint(DarkThemeColor.PRIMARY_TEXT_COLOR);
         legend.setItemLabelPadding(new RectangleInsets(5,5,5,5));
         legend.setLegendItemGraphicAnchor(RectangleAnchor.LEFT);
+
+
+
 
 
     }
