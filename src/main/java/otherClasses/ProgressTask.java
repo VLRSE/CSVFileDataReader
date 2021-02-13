@@ -44,7 +44,7 @@ public class ProgressTask extends SwingWorker<List<Artikel>, Artikel> {
 
     @Override
     protected List<Artikel> doInBackground() throws Exception {
-        System.out.println("Progess task has started");
+
 
         /* CSVParser from the com.apache.commons library
          *get a CSV parser for a given file with a CSV Format Excel with delimiter(;)
