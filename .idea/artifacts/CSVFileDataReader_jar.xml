@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="CSVFileDataReader:jar">
+    <output-path>$PROJECT_DIR$/target/artifacts/CSVFileDataReader_jar</output-path>
+    <root id="archive" name="CSVFileDataReader.jar">
+      <element id="module-output" name="CSVFileDataReader" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-csv/1.8/commons-csv-1.8.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jfree/jcommon/1.0.24/jcommon-1.0.24.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jfree/jfreechart/1.5.1/jfreechart-1.5.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
